@@ -1,3 +1,12 @@
+import {RouterConfiguration} from 'aurelia-router';
 export class App {
-  message = 'Hello World!';
+  router: RouterConfiguration;
+  configureRouter(config, router){
+    config.title = 'Oven';
+    config.map([
+      { route: '',              moduleId: 'app-home',       title: 'Home' },
+    ]);
+
+    this.router = router;
+  }
 }
