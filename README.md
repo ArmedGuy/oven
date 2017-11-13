@@ -16,8 +16,8 @@ Development can be made without Visual Studio, but some desync between folder st
 To run the server in dev mode, simply install all dependencies in the requirements.txt file, then run `python3 runserver.py`.
 
 ### Setting up oven-app for development
-The `oven-app` project uses the (Aurelia framework)[http://aurelia.io/] for client side development, using TypeScript.
-It is, as most JavaScript-based projects, filled with dependencies.
+The `oven-app` project uses the [Aurelia framework](http://aurelia.io/) for client side development, using TypeScript.
+It is, as most JavaScript-based projects, filled with dependencies, including nodejs and npm.
 
 Enter the oven-app folder and run `npm install`. This will download all dependencies (mostly dev deps), including the `aurelia-cli`.
 
