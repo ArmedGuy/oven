@@ -10,10 +10,12 @@ let serve = gulp.series(
   build,
   done => {
     browserSync({
-      online: false,
+      online: true,
       open: false,
       port: 9000,
+      host: '0.0.0.0',
       logLevel: 'silent',
+	  ui: false,
       server: {
         baseDir: [project.platform.baseDir],
         middleware: [historyApiFallback(), function(req, res, next) {
@@ -25,7 +27,6 @@ let serve = gulp.series(
       if (err) return done(err);
       let urls = bs.options.get('urls').toJS();
       log(`Application Available At: ${urls.local}`);
-      log(`BrowserSync Available At: ${urls.ui}`);
       done();
     });
   }

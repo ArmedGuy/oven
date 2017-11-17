@@ -3,7 +3,7 @@ This script runs the Oven application using a development server.
 """
 
 from os import environ
-from Oven import app
+from oven import app
 
 if __name__ == '__main__':
     HOST = environ.get('SERVER_HOST', 'localhost')
