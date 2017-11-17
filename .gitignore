@@ -193,3 +193,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# Vagrant directory
+.vagrant
+
