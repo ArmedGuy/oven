@@ -1,21 +1,6 @@
 <template>
-  <require from="app/styles/bootstrap.min.css"></require>
+  <require from="styles/bootstrap.css"></require>
+  <require from="styles/ide.css"></require>
 
-  <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-          <i class="fa fa-user"></i>
-          <span>Contacts</span>
-        </a>
-      </div>
-    </div>
-  </nav>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">Contact List Placeholder</div>
-      <router-view class="col-md-8"></router-view>
-    </div>
-  </div>
+  <router-view></router-view>
 </template>

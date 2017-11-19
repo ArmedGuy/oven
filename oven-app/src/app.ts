@@ -4,7 +4,7 @@ export class App {
   configureRouter(config, router){
     config.title = 'Oven';
     config.map([
-      { route: '',              moduleId: 'app-home',       title: 'Home' },
+      { route: '',              moduleId: 'modules/app-home',       title: 'Home' },
     ]);
 
     this.router = router;

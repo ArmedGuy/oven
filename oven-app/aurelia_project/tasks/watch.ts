@@ -44,8 +44,10 @@ let watchPath = (p) => {
   gulpWatch(
     p,
     {
-      read: false, // performance optimization: do not read actual file contents
-      verbose: true
+      read: false,
+      verbose: true,
+      interval: 1000,
+      usePolling: true
     },
     (vinyl) => processChange(vinyl));
 };

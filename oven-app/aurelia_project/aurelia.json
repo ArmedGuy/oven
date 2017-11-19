@@ -39,7 +39,10 @@
             "path": "node_modules/aurelia-cli/lib/resources/scripts/configure-bluebird.js",
             "env": "dev"
           },
-          "node_modules/systemjs/dist/system.js"
+          "node_modules/systemjs/dist/system.js",
+          "node_modules/ace-builds/src-min/ace.js",
+          "node_modules/ace-builds/src-min/mode-python.js",
+          "node_modules/ace-builds/src-min/theme-chaos.js"
         ],
         "dependencies": [
           "aurelia-binding",
