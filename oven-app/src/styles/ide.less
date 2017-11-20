@@ -6,6 +6,7 @@ html, body, .ide-frame {
     height: 100vh;
     padding: 0;
     margin: 0;
+    text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.2);
 }
 
 h1, h2, h3, h4, h5, h6, p, span {
@@ -37,25 +38,86 @@ h1, h2, h3, h4, h5, h6, p, span {
 }
 
 .ide-panel {
-    background-color: @bg-secondary;
-    padding: 12px;
+    padding: 14px;
 }
 
 .ide-editor-wrapper {
     padding: 0;
 }
 
+.ide-tab-wrapper {
+    width: 100%;
+    height: @top-bar-height;
+    background-color: @bg-secondary;
+    overflow: hidden;
+
+    .ide-tab {
+        cursor: pointer;
+        background-color: @bg-primary;
+        color: @text-menu;
+        font-size: 14px;
+        height: @top-bar-height;
+        line-height: @top-bar-height;
+        min-width: 70px;
+        padding-left: 20px;
+        padding-right: 30px;
+        float: left;
+        border-right: 1px solid @bg-editor;
+        &.active {
+            background-color: @bg-editor;
+            color: @text-primary;
+        }
+    }
+}
 
 .ide-menu {
     order: 0;
     flex: 0 0 auto;
-    width: 200px;
+    width: 300px;
     background-color: @bg-secondary;
     &.icon-menu {
-        width: 58px;
+        width: 50px;
         background-color: @bg-primary;
         &.primary {
             background-color: @color-primary;
+        }
+    }
+}
+.ide-menu-header {
+    height: @top-bar-height;
+    font-size: 10px;
+    text-transform: uppercase;
+    line-height: @top-bar-height;
+    padding-left: 14px;
+    color: @text-menu;
+    margin: -12px;
+    margin-bottom: 0;
+}
+.ide-pane-frame {
+    background-color: @bg-editor;
+}
+
+.ide-menu-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    > li {
+        color: @text-menu;
+        font-size: 14px;
+        padding-left: 20px;
+        height: 24px;
+        line-height: 24px;
+        margin: 0px -12px;
+        cursor: pointer;
+
+        &:hover {
+            color: @text-primary;
+            background-color: @bg-menu-item-hover;
+        }
+
+        &.active {
+            color: @text-primary;
+            background-color: @bg-menu-item-active;
         }
     }
 }
@@ -66,6 +128,7 @@ h1, h2, h3, h4, h5, h6, p, span {
     flex: 0 0 auto;
     height: 200px;
 }
+
 .ide-status {
     box-sizing: border-box;
     order: 0;
