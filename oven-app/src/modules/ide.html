@@ -10,12 +10,12 @@
                         Explorer: Oven-app
                     </div>
                     <ul class="ide-menu-list">
-                        <li repeat.for="pane of ide.panes">${pane.getDisplayName()}</li>
+                        <li repeat.for="pane of ide.panes" click.trigger="ide.openPane(pane)">${pane.getDisplayName()}</li>
                     </ul>
                 </div>
                 <div class="ide-content ide-container column">
                     <div class="ide-tab-wrapper">
-                        <div class="ide-tab ${pane == ide.currentPane ? 'active' : ''}" repeat.for="pane of ide.openPanes">${pane.getDisplayName()}</div>
+                        <div class="ide-tab ${pane == ide.currentPane ? 'active' : ''}" repeat.for="pane of ide.openPanes" click.trigger="ide.openPane(pane)">${pane.getDisplayName()}</div>
                     </div>
                     <div class="ide-content ide-pane-frame">
                         <compose view-model.bind="ide.currentPane" view="${ide.currentPane.template}"></compose>

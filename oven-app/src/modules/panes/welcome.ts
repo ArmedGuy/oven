@@ -6,11 +6,11 @@ export class WelcomePane implements EditorPane {
     iconName: string;
     iconColor: string;
 
-    constructor() {
-        this.name = "Welcome";
+    constructor(bla: string) {
+        this.name = "Welcome" + bla;
         this.template = "modules/panes/welcome.html";
     }
-    
+
     getDisplayName(): string {
         return this.name;
     }
