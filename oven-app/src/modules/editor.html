@@ -1,0 +1,35 @@
+<template>
+  <div class="ide-frame ide-container">
+      <div class="ide-frame ide-container column">
+          <div class="ide-content ide-container">
+              <div class="ide-menu icon-menu ide-panel">
+                  <a class="icon-menu-link" href="#" title="Project">
+                      <i class="fa fa-hashtag" aria-hidden="true"></i>
+                  </a>
+                  <a class="icon-menu-link active" href="#" title="Deployment">
+                      <i class="fa fa-server" aria-hidden="true"></i>
+                  </a>
+                  <a class="icon-menu-link" href="#" title="Marketplace">
+                      <i class="fa fa-database" aria-hidden="true"></i>
+                  </a>
+              </div>
+              <div class="ide-menu ide-panel">
+                  <router-view></router-view>
+              </div>
+              <div class="ide-content ide-container column">
+                  <div class="ide-tab-wrapper">
+                      <div class="ide-tab ${pane == editor.currentPane ? 'active' : ''}" repeat.for="pane of editor.openPanes" click.trigger="editor.openPane(pane)">
+                          <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.getDisplayName()}
+                      </div>
+                  </div>
+                  <div class="ide-content ide-pane-frame">
+                      <compose view-model.bind="editor.currentPane" view="${editor.currentPane.template}"></compose>
+                  </div>
+              </div>
+          </div>
+          <div class="ide-status">
+              <p>status</p>
+          </div>
+      </div>
+  </div>
+</template>

@@ -2,12 +2,10 @@ import {EditorPane} from './panes/editor-pane';
 declare var ace: any;
 export class IDE {
     editor: any;
-    public panes: Array<EditorPane>;
     openPanes: Array<EditorPane>;
     currentPane: EditorPane;
 
     constructor() {
-        this.panes = new Array<EditorPane>();
         this.openPanes = new Array<EditorPane>();
     }
 
@@ -20,8 +18,6 @@ export class IDE {
     }
 
     openPane(pane: EditorPane) {
-        if(this.panes.indexOf(pane) <= -1)
-            return;
         if(this.openPanes.indexOf(pane) > -1)
         {
             this.currentPane = pane;

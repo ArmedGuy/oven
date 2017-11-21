@@ -3,8 +3,7 @@ export interface EditorPane {
 
     template: string;
 
-    iconName: string;
-    iconColor: string;
+    icon: string;
 
     getDisplayName(): string;
 }

@@ -1,0 +1,14 @@
+<template>
+    <div class="ide-menu-header">
+        Home
+    </div>
+    <ul class="ide-menu-list">
+        <li repeat.for="pane of availableActions" click.trigger="editor.openPane(pane)">
+            <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.getDisplayName()}
+        </li>
+        <li class="header">Recent projects</li>
+        <li repeat.for="pane of availableActions" click.trigger="editor.openPane(pane)">
+            <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.getDisplayName()}
+        </li>
+    </ul>
+</template>
