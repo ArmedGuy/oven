@@ -113,6 +113,7 @@ h1, h2, h3, h4, h5, h6 {
         }
     }
 }
+
 .ide-menu-header {
     height: @top-bar-height;
     font-size: 11px;
@@ -160,10 +161,20 @@ h1, h2, h3, h4, h5, h6 {
 .ide-pane-frame {
     background-color: @bg-editor;
 }
-.ide-pane-icon {
+.ide-pane-icon, .ide-pane-close {
     width: 16px;
     display: inline-block;
     text-align: center;
+}
+.ide-pane-close {
+    visibility: hidden;
+}
+.ide-tab {
+    &:hover {
+        .ide-pane-close {
+            visibility: visible;
+        }
+    }
 }
 
 .ide-editor {

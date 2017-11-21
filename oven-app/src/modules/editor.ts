@@ -16,6 +16,7 @@ export class Editor {
   attached() {
     //this.ide.attach();
   }
+
   openPane(pane: EditorPane) {
     if(this.openPanes.indexOf(pane) > -1)
     {
@@ -24,6 +25,16 @@ export class Editor {
     }
     this.openPanes.push(pane);
     this.currentPane = pane;
+  }
+
+  closePane(pane: EditorPane) {
+    let index = this.openPanes.indexOf(pane);
+    if(index - 1 <= -1) {
+      this.currentPane = null;
+    } else {
+      this.currentPane = this.openPanes[index-1];
+    }
+    this.openPanes.splice(index, 1);
   }
 }
 
