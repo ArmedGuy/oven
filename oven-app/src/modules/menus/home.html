@@ -4,11 +4,11 @@
     </div>
     <ul class="ide-menu-list">
         <li repeat.for="pane of availableActions" click.trigger="editor.openPane(pane)">
-            <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.getDisplayName()}
+            <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.displayName}
         </li>
         <li class="header">Recent projects</li>
-        <li repeat.for="pane of availableActions" click.trigger="editor.openPane(pane)">
-            <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.getDisplayName()}
+        <li repeat.for="project of recentProjects" click.trigger="editor.openProject(project)">
+            <span class="ide-pane-icon"></span> ${project.name}
         </li>
     </ul>
 </template>

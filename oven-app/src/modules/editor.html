@@ -2,12 +2,17 @@
   <div class="ide-frame ide-container">
       <div class="ide-frame ide-container column">
           <div class="ide-content ide-container">
-              <div class="ide-menu icon-menu ide-panel">
-                <a class="icon-menu-link" href="#" title="Project">
-                  <i class="fa fa-hashtag" aria-hidden="true"></i>
-                </a>
-                <a class="icon-menu-link active" href="#" title="Deployment">
-                  <i class="fa fa-server" aria-hidden="true"></i>
+              <div class="ide-menu icon-menu ide-panel ${editor.currentProject ? '' : 'primary'}">
+                <div if.bind="editor.currentProject" class="project-icons">
+                  <a class="icon-menu-link" href="#" title="Explorer">
+                    <i class="fa fa-files-o" aria-hidden="true"></i>
+                  </a>
+                  <a class="icon-menu-link active" href="#" title="Deployment">
+                    <i class="fa fa-server" aria-hidden="true"></i>
+                  </a>
+                </div>
+                <a class="icon-menu-link" href="#" title="Home">
+                  <i class="fa fa-home" aria-hidden="true"></i>
                 </a>
                 <a class="icon-menu-link" href="#" title="Marketplace">
                   <i class="fa fa-database" aria-hidden="true"></i>
@@ -19,8 +24,8 @@
               <div class="ide-content ide-container column">
                   <div class="ide-tab-wrapper">
                       <div class="ide-tab ${pane == editor.currentPane ? 'active' : ''}" repeat.for="pane of editor.openPanes" click.trigger="editor.openPane(pane)">
-                        <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.getDisplayName()}
-                        <span class="ide-pane-close" click.trigger="editor.closePane(pane)"><i class="fa fa-times"></i></span>
+                        <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.displayName}
+                        <span class="ide-tab-close" click.trigger="editor.closePane(pane)"><i class="fa fa-times"></i></span>
                       </div>
                   </div>
                   <div class="ide-content ide-pane-frame">
@@ -29,7 +34,7 @@
               </div>
           </div>
           <div class="ide-status">
-              <p>status</p>
+              <div if.bind="editor.currentProject">${editor.currentProject.name}</div>
           </div>
       </div>
   </div>

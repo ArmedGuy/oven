@@ -3,7 +3,7 @@ export interface EditorPane {
 
     template: string;
 
-    icon: string;
+    readonly icon: string;
 
-    getDisplayName(): string;
+    readonly displayName: string;
 }
