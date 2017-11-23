@@ -15,10 +15,3 @@ else:
 db = SQLAlchemy(app)
 app.secret_key = app.config['SECRET_KEY']
 
-app.permanent_session_lifetime = timedelta(hours=24)
-
-from .views import webapp, account, projects
-
-app.register_blueprint(webapp.blueprint)
-app.register_blueprint(account.blueprint)
-app.register_blueprint(projects.blueprint)
