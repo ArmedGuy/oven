@@ -32,3 +32,7 @@ Enter the oven-app folder and run `npm install`. This will download all dependen
 
 Development is accomplished by starting the builtin aurelia web server, that helps you debug and build the application.
 Run the server with `au run --watch`.
+
+## Deployment
+This project uses [Travis CI](http://travis-ci.org) for continous integration testing and deployment.
+Whenver something is pushed to master, a docker image is built and pushed to [Docker hub](http://dockerhub.com/armedguy/oven), so that things can be continously released.
