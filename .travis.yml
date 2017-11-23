@@ -17,7 +17,7 @@ install:
   - sudo apt-get install -y python3 python3-pip
   - cd ./oven-app
   - sudo npm install -g aurelia-cli
-  - npm install --no-bin-links
+  - npm install
   - cd ../
 
 script:
