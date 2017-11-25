@@ -11,13 +11,15 @@ export class OvenApi {
         project1.code_file = `
 # oven:route:start
 # oven:route:start_pre
+from flask import bla
 # oven:route:end_pre
 # oven:route:url=POST/user/<path:param1>/<uuid:param2>
 # oven:route:name=get_user_by_uuid
 @app.route('/user/<path:param1>/<uuid:param2>', methods=['POST'])
 def get_user_by_uuid(param1, param2):
 # oven:route:start_code
-
+if param1 == param2:
+    return param1
 # oven:route:end_code
 # oven:route:end
 

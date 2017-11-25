@@ -19,7 +19,7 @@ export class ProjectExplorer {
     subscribe() {
         this.eventAggregator.subscribe('project loaded', (project: Project) => {
             project.routes.forEach((route: Route) => {
-                let rp = new RoutePane(route);
+                let rp = new RoutePane(route, 'python');
                 this.projectPanes.push(rp);
             });
         });

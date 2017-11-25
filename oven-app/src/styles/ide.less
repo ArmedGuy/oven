@@ -18,6 +18,9 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: normal;
 }
+p {
+    font-weight: normal;
+}
 
 .ide-container {
     display: flex;
@@ -204,6 +207,26 @@ h1, h2, h3, h4, h5, h6 {
     background-color: @bg-editor !important;
     .ace_gutter {
         background-color: @bg-editor !important;
+    }
+}
+.ide-route-editor {
+    background-color: @bg-editor;
+    min-height: 100px;
+    box-sizing: border-box;
+    padding: 5px;
+
+    .route-editor-url {
+        height: 80px;
+
+        .route-editor-url-part {
+            margin-left: 10px;
+            box-sizing: border-box;
+            background-color: #141414;
+            height: 80px;
+            padding: 30px;
+            min-width: 60px;
+            float: left;
+        }
     }
 }
 

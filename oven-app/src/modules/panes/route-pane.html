@@ -1,0 +1,13 @@
+<template>
+    <div class="ide-panel ide-editor-wrapper">
+        <div class="ide-editor" id="pre_editor"></div>
+        <div class="ide-route-editor">
+            <div class="route-editor-url">
+                <div class="route-editor-url-part" repeat.for="part of route.urlParts">
+                    ${part.part}
+                </div>
+            </div>
+        </div>
+        <div class="ide-editor" id="main_editor"></div>
+    </div>
+</template>
