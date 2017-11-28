@@ -1,5 +1,5 @@
 import { SoftwareService } from "../software-service";
-import { Project, Route, StaticUrlPart, VariableUrlPart } from "../models";
+import { Project, Route } from "../models";
 
 
 export class Python3FlaskSoftwareService implements SoftwareService {
@@ -7,25 +7,7 @@ export class Python3FlaskSoftwareService implements SoftwareService {
         let httpMethod = url_data.split("/", 1)[0];
         route.httpMethod = httpMethod;
         let url = url_data.replace(httpMethod, "");
-        let url_parts = url.split("/");
-        url_parts.forEach((part) => {
-            if(part.length == 0)
-                return;
-            if(part.startsWith("<")) {
-                let p = new VariableUrlPart();
-                let s = part.replace("<", "").replace(">", "").split(":");
-                if(s.length == 1) {
-                    p.type = "string";
-                    p.part = s[0];
-                } else {
-                    p.type = s[0];
-                    p.part = s[1];
-                }
-                route.urlParts.push(p);
-            } else {
-                route.urlParts.push(new StaticUrlPart(part));
-            }
-        });
+        route.url = url;
     }
     parseProject(project: Project) {
         let lines = project.code_file.split("\n");

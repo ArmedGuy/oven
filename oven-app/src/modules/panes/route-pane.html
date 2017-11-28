@@ -1,13 +1,85 @@
 <template>
     <div class="ide-panel ide-editor-wrapper">
-        <div class="ide-editor" id="pre_editor"></div>
-        <div class="ide-route-editor">
-            <div class="route-editor-url">
-                <div class="route-editor-url-part" repeat.for="part of route.urlParts">
-                    ${part.part}
+
+        <div class="ide-editor" id="pre_editor" show.bind="false"></div>
+        <div class="ide-route-wizard ide-panel" show.bind="route.url.length == 0">
+            <h2>Create a new route</h2>
+            <p>The first step is to decide what your route is for.</p>
+            <div>
+                <div>
+                    <h3>Basic routes</h3>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('basic-add')">
+                    Add a new <span class="blank">${example_name}</span>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('basic-get')">
+                    Get a <span class="blank">${example_name}</span>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('basic-update')">
+                    Update a <span class="blank">${example_name}</span>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('basic-delete')">
+                    Delete a <span class="blank">${example_name}</span>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('basic-list')">
+                    Get a list of <span class="blank">${example_name}s</span>
+                </div>
+                <div class="header">
+                    <h3>Action routes</h3>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('action')">
+                    Perform action <span class="blank">${example_action}</span>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('action-on')">
+                    Perform action <span class="blank">${example_action}</span> on a <span class="blank">${example_name}</span>
+                </div>
+                <div class="header">
+                    <h3>Related information</h3>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('related-get')">
+                    Get <span class="blank">${example_related}s</span> of a <span class="blank">${example_name}</span>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('related-add')">
+                    Add new <span class="blank">${example_related}</span> of a <span class="blank">${example_name}</span>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('related-delete')">
+                    Delete <span class="blank">${example_related}</span> of a <span class="blank">${example_name}</span>
+                </div>
+                <div class="header">
+                    <h3>Other routes</h3>
+                </div>
+                <div class="route-suggestion" click.trigger="setupRoute('manual')">
+                    Manual route
                 </div>
             </div>
         </div>
-        <div class="ide-editor" id="main_editor"></div>
+        <div class="ide-route-editor ide-panel" show.bind="route.url.length != 0">
+            <h2>Route settings</h2>
+            <div>
+                <h4>HTTP Method</h4>
+                <label repeat.for="method of ['GET', 'POST', 'PUT', 'DELETE']">
+                    <input type="radio" name="method" value.bind="method" checked.bind="route.httpMethod" />
+                    ${method}
+                </label>
+                <div class="method-explanation">
+                    <div show.bind="route.httpMethod == 'GET'">
+                        <p>The GET method requests a representation of the specified resource. Requests using GET should only retrieve data and should have no other effect.</p>
+                    </div>
+                    <div show.bind="route.httpMethod == 'POST'">
+                        <p>The POST method requests that the server accept the entity enclosed in the request as a new subordinate of the web resource identified by the URI. The data POSTed might be, for example,
+                            an annotation for existing resources; a message for a bulletin board, newsgroup, mailing list, or comment thread; a block of data that is the result of submitting a web form to a data-handling process; or an item to add to a database.</p>
+                    </div>
+                    <div show.bind="route.httpMethod == 'PUT'">
+                        <p>The PUT method requests that the enclosed entity be stored under the supplied URI. If the URI refers to an already existing resource, it is modified.</p>
+                    </div>
+                    <div show.bind="route.httpMethod == 'DELETE'">
+                        <p>The DELETE method deletes the specified resource.</p>
+                    </div>
+                </div>
+            </div>
+            <h4>URL Path</h4>
+            <div class="ide-editor" id="route_editor"></div>
+        </div>
+        <div class="ide-editor" id="main_editor" show.bind="route.url.length != 0"></div>
     </div>
 </template>

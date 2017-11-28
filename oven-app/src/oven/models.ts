@@ -1,25 +1,15 @@
-export interface UrlPart {
-    part: string;
-}
-export class StaticUrlPart implements UrlPart {
-    part: string;
-
-    constructor(part: string) {
-        this.part = part;
-    }
-}
-export class VariableUrlPart implements UrlPart {
-    part: string;
-    type: string;
-}
 export class Route {
     name: string;
     httpMethod: string;
-    urlParts: Array<UrlPart>;
+    url: string;
     prepend_content: string;
     content: string;
     constructor() {
-        this.urlParts = new Array<UrlPart>();
+        this.name = "new_route";
+        this.url = "";
+        this.httpMethod = "GET";
+        this.content = "";
+        this.prepend_content = "";
     }
 }
 export class Project {

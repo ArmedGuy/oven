@@ -209,24 +209,57 @@ p {
         background-color: @bg-editor !important;
     }
 }
-.ide-route-editor {
-    background-color: @bg-editor;
-    min-height: 100px;
+.ide-route-wizard {
     box-sizing: border-box;
-    padding: 5px;
 
-    .route-editor-url {
-        height: 80px;
-
-        .route-editor-url-part {
-            margin-left: 10px;
+    .route-suggestion {
+        border-radius: 10px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        padding: 0px 15px;
+        background-color: @color-status;
+        float: left;
+        margin-left: 15px;
+        cursor: pointer;
+        box-sizing: border-box;
+        
+        .blank {
             box-sizing: border-box;
-            background-color: #141414;
-            height: 80px;
-            padding: 30px;
-            min-width: 60px;
-            float: left;
+            background-color: @bg-primary;
+            min-width: 50px;
+            padding: 0px 5px;
+            min-height: 1px;
+            margin: 0 3px;
+            display: inline-box;
         }
+    }
+    .header {
+        box-sizing: border-box;
+        clear: both;
+        padding-top: 15px;
+    }
+}
+.ide-route-editor {
+    background-color: lighten(@bg-editor,2%);
+    box-sizing: border-box;
+
+    label {
+        color: @color-status;
+        padding-right: 12px;
+    }
+    .method-explanation {
+        border-left: 4px solid @color-status;
+        margin: 10px 0;
+        padding: 2px 15px;
+        width: 50%;
+
+        div {
+            display: inline;
+        }
+    }
+    #route_editor {
+        font-size: 24px;
     }
 }
 

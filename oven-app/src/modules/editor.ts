@@ -37,6 +37,9 @@ export class Editor {
         this.eventAggregator.publish('project loaded', project);
       });
     });
+    this.eventAggregator.subscribe('open pane', (pane) => {
+      this.openPane(pane);
+    });
   }
 
   openPane(pane: EditorPane) {
@@ -68,20 +71,4 @@ export class Editor {
     this.currentProject = project;
     this.router.navigateToRoute('project', { id: project.id });
   }
-}
-
-
-declare var ace: any;
-export class IDE {
-    editor: any;
-
-    attach() {
-        this.editor = ace.edit("codeEditor");
-        this.editor.setTheme("ace/theme/chaos");
-        this.editor.setHighlightActiveLine(false);
-        this.editor.setShowPrintMargin(false);
-        this.editor.getSession().setMode("ace/mode/python");
-    }
-
-   
 }
