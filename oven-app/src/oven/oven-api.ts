@@ -39,8 +39,15 @@ def get_group_by_id(id):
         let project2 = new Project();
         project2.id = "blabla";
         project2.name = "gpp";
-        this.projects = new Array<Project>(project1, project2);
+
+        let project3 = new Project();
+        project3.id = "blablabla";
+        project3.name = "oven-api";
+        project3.software_id = "python3flask";
+        project3.code_file = "";
+        this.projects = new Array<Project>(project1, project2, project3);
     }
+
     getRecentProjects(): Promise<Array<Project>> {
         return new Promise<Array<Project>>((resolve, reject) => {
             resolve(this.projects);

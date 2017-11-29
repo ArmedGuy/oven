@@ -26,6 +26,8 @@ export class RoutePane implements EditorPane {
 
     route: Route;
     language: string;
+
+    example_data: Array<any>;
     constructor(route: Route, language: string) {
         this.route = route;
         this.template = "modules/panes/route-pane.html";
@@ -48,7 +50,7 @@ export class RoutePane implements EditorPane {
         this.route_editor.setTheme("ace/theme/chaos");
         this.route_editor.setHighlightActiveLine(false);
         this.route_editor.setShowPrintMargin(false);
-        this.route_editor.getSession().setMode(`ace/mode/${this.language}`);
+        this.route_editor.getSession().setMode(`ace/mode/route-url`);
         this.route_editor.setValue(this.route.url, -1);
         this.route_editor.setOption("maxLines", 1);
         this.route_editor.getSession().on('change', (e) => {
