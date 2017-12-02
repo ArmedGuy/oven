@@ -36,3 +36,10 @@ Run the server with `au run --watch`.
 ## Deployment
 This project uses [Travis CI](http://travis-ci.org) for continous integration testing and deployment.
 Whenver something is pushed to master, a docker image is built and pushed to [Docker hub](http://dockerhub.com/armedguy/oven), so that things can be continously released.
+
+## Developing on Windows
+Make shure you execute the following command if you are developing on windows:
+```bash
+git config --global core.autocrlf false
+```
+Otherwise the .sh files will not work when you clone the repo.
