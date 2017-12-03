@@ -1,20 +1,15 @@
 """
 Routes and views for the flask application.
 """
-
+from oven import app
 from datetime import datetime
 from flask import render_template
-from oven import app
+
 
 @app.route('/')
 @app.route('/home')
 def home():
-    """Renders the home page."""
-    return render_template(
-        'index.html',
-        title='Home Page',
-        year=datetime.now().year,
-    )
+    return '<h1>Works!</h1>'
 
 @app.route('/contact')
 def contact():
