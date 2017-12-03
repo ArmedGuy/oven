@@ -3,7 +3,7 @@ The flask application package.
 """
 import os
 from flask import Flask
-#from flask_sqlalchemy import SQLAlchemy
+from .views import account, projects
 app = Flask(__name__)
 
 if 'FLASK_DEBUG' in os.environ:
@@ -11,8 +11,12 @@ if 'FLASK_DEBUG' in os.environ:
 else:
     app.config.from_object("config.ProductionConfig")
 	
-from views import *
-#db = SQLAlchemy(app)
+
 app.secret_key = app.config['SECRET_KEY']
 
+app.register_blueprint(account.blueprint, url_prefix='/account')
+app.register_blueprint(projects.blueprint, url_prefix='/projects')
 
+@app.route("/")
+def index():
+    return '<h1>Working</h1>'
