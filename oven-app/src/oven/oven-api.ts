@@ -2,13 +2,45 @@ import { Project } from "./models";
 import { getService } from "./software-service-factory";
 
 export class OvenApi {
-    projects: Array<Project>;
+    static projects: Array<Project> = new Array<Project>();
     constructor() {
-        let project1 = new Project();
-        project1.id = "bla";
-        project1.name = "oven-api";
-        project1.software_id = "python3flask";
-        project1.code_file = `
+        
+    }
+
+    getRecentProjects(): Promise<Array<Project>> {
+        return new Promise<Array<Project>>((resolve, reject) => {
+            resolve(OvenApi.projects);
+        });
+        
+    }
+
+    getProject(id: string): Promise<Project> {
+        return new Promise<Project>((resolve, reject) => {
+            let project = OvenApi.projects.filter(x => x.id == id)[0];
+            getService(project.software_id).parseProject(project);
+
+            resolve(OvenApi.projects.filter(x => x.id == id)[0]);
+        });
+    }
+
+    createProject(name: string, software: string, platform: string) {
+        return new Promise<Project>((resolve, reject) => {
+            let project = new Project();
+            project.id = "blablablabla";
+            project.name = name;
+            project.software_id = software;
+            project.code_file = "";
+            OvenApi.projects.push(project);
+            resolve(project);
+        });
+    }
+}
+
+let project1 = new Project();
+project1.id = "bla";
+project1.name = "oven-api";
+project1.software_id = "python3flask";
+project1.code_file = `
 # oven:route:start
 # oven:route:start_pre
 from flask import bla
@@ -19,7 +51,7 @@ from flask import bla
 def get_user_by_uuid(param1, param2):
 # oven:route:start_code
 if param1 == param2:
-    return param1
+return param1
 # oven:route:end_code
 # oven:route:end
 
@@ -34,33 +66,15 @@ def get_group_by_id(id):
 
 # oven:route:end_code
 # oven:route:end
-        `;
+`;
 
-        let project2 = new Project();
-        project2.id = "blabla";
-        project2.name = "gpp";
+let project2 = new Project();
+project2.id = "blabla";
+project2.name = "gpp";
 
-        let project3 = new Project();
-        project3.id = "blablabla";
-        project3.name = "oven-api";
-        project3.software_id = "python3flask";
-        project3.code_file = "";
-        this.projects = new Array<Project>(project1, project2, project3);
-    }
-
-    getRecentProjects(): Promise<Array<Project>> {
-        return new Promise<Array<Project>>((resolve, reject) => {
-            resolve(this.projects);
-        });
-        
-    }
-
-    getProject(id: string): Promise<Project> {
-        return new Promise<Project>((resolve, reject) => {
-            let project = this.projects.filter(x => x.id == id)[0];
-            getService(project.software_id).parseProject(project);
-
-            resolve(this.projects.filter(x => x.id == id)[0]);
-        });
-    }
-}
+let project3 = new Project();
+project3.id = "blablabla";
+project3.name = "oven-api2";
+project3.software_id = "python3flask";
+project3.code_file = "";
+OvenApi.projects.push(project1, project2, project3);

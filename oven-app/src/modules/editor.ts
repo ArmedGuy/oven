@@ -40,6 +40,9 @@ export class Editor {
     this.eventAggregator.subscribe('open pane', (pane) => {
       this.openPane(pane);
     });
+    this.eventAggregator.subscribe('close pane', (pane) => {
+      this.closePane(pane);
+    });
   }
 
   openPane(pane: EditorPane) {
