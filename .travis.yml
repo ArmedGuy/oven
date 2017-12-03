@@ -38,4 +38,4 @@ after_success:
 notifications:
   email:
     recipients:
-	    - johjat-4@student.ltu.se
+      - johjat-4@student.ltu.se
