@@ -23,8 +23,6 @@ if 'FLASK_DEBUG' in os.environ:
 else:
     app.config.from_object("config.ProductionConfig")
 
-from views import *
-
 app.secret_key = app.config['SECRET_KEY']
 
 app.register_blueprint(account.blueprint, url_prefix='/account')
