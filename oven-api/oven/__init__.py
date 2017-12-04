@@ -4,7 +4,6 @@ The flask application package.
 import os
 from flask import Flask
 from flask_pymongo import PyMongo
-
 from flask import request
 from flask import jsonify
 from flask import render_template
@@ -26,13 +25,10 @@ else:
 
 from views import *
 
-app.register_blueprint(account.blueprint, url_prefix='/account')
-app.register_blueprint(projects.blueprint, url_prefix='/projects')
-
 app.secret_key = app.config['SECRET_KEY']
 
-
-
+app.register_blueprint(account.blueprint, url_prefix='/account')
+app.register_blueprint(projects.blueprint, url_prefix='/projects')
 
 @app.route('/')
 def home():

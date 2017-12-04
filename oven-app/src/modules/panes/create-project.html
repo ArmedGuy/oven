@@ -1,3 +1,36 @@
 <template>
-    
+    <div class="ide-panel ide-new-project-wizard">
+        <h2>Create a new project</h2>
+
+        <h2>1. Name your project</h2>
+        <input type="text" value.bind="projectName">
+
+        <h4>2. Select software stack</h4>
+        <p>Please select which software stack you want to use</p>
+        <div>
+            <div class="choice-list">
+                <div class="choice ${software == 'python3flask' ? 'current' : ''}" click.trigger="setSoftware('python3flask')">
+                    Python3 + Flask
+                </div>
+                <div class="choice ${software == 'dotnetcore' ? 'current' : ''}" click.trigger="setSoftware('dotnetcore')">
+                    .NET Core + Kestrel
+                </div>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+        <h4>3. Select deployment platform</h4>
+        <div>
+            <div class="choice-list">
+                <div class="choice ${platform == 'nomad' ? 'current' : ''}" click.trigger="setPlatform('nomad')">
+                    Nomad
+                </div>
+                <div class="choice ${platform == 'heroku' ? 'current' : ''}" click.trigger="setPlatform('heroku')">
+                    Heroku
+                </div>
+            </div>
+        </div>
+        <div style="clear: both";></div>
+        <h4>3. Go</h4>
+        <button class="btn" click.trigger="createProject()">Create project</button>
+    </div>
 </template>
