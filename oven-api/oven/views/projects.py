@@ -61,3 +61,9 @@ def create(project):
 	db.projects.insert({'software_id':software_id,'platform_id':platform_id,'shortName':shortName,'description':description,'shortDescription':shortDescription,'codeFile':codeFile,'dependencies':dependencies,'revision':revision,'create_date':create_date})
 	
 	return "Success!!\n" + project + " created on " + dumps(create_date) + "!\n"
+
+	
+# Used to create a project
+@blueprint.route('/get_projects/', methods=['GET'])
+def get_projects():
+	return dumps(db.projects.find())
