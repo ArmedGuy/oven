@@ -4,6 +4,7 @@ import { OvenApi } from "../../oven/oven-api";
 import {EventAggregator} from 'aurelia-event-aggregator';
 import { autoinject } from "aurelia-framework";
 import { Router } from "aurelia-router";
+import { NewProjectPane } from "./new-project";
 
 export class CreateProjectPane implements EditorPane{
     name: string;
@@ -47,6 +48,7 @@ export class CreateProjectPane implements EditorPane{
         this.api.createProject(this.projectName, this.software, this.platform).then((project) => {
             this.eventAggregator.publish('close pane', this);
             this.router.navigateToRoute("project", { id: project.id });
+            this.eventAggregator.publish('open pane', new NewProjectPane);
         });
     }
     

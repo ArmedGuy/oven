@@ -12,7 +12,7 @@
                 <div class="choice ${software == 'python3flask' ? 'current' : ''}" click.trigger="setSoftware('python3flask')">
                     Python3 + Flask
                 </div>
-                <div class="choice ${software == 'dotnetcore' ? 'current' : ''}" click.trigger="setSoftware('dotnetcore')">
+                <div class="choice disabled ${software == 'dotnetcore' ? 'current' : ''}" click.trigger="setSoftware('dotnetcore')">
                     .NET Core + Kestrel
                 </div>
             </div>
@@ -24,7 +24,7 @@
                 <div class="choice ${platform == 'nomad' ? 'current' : ''}" click.trigger="setPlatform('nomad')">
                     Nomad
                 </div>
-                <div class="choice ${platform == 'heroku' ? 'current' : ''}" click.trigger="setPlatform('heroku')">
+                <div class="choice disabled ${platform == 'heroku' ? 'current' : ''}" click.trigger="setPlatform('heroku')">
                     Heroku
                 </div>
             </div>
