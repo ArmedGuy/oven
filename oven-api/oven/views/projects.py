@@ -1,13 +1,12 @@
-from flask import url_for, Blueprint, render_template, request, session, redirect
+import os
 
 from oven import app
-from flask_pymongo import PyMongo
-from pymongo import MongoClient
-from flask import request
-from flask import jsonify
-from flask import render_template
+from flask import Flask
 from datetime import datetime
+from pymongo import MongoClient
 from bson.json_util import dumps
+from flask_pymongo import PyMongo
+from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify
 
 client = MongoClient('localhost', 27017)
 db = client.oven
@@ -64,6 +63,6 @@ def create(project):
 
 	
 # Used to create a project
-@blueprint.route('/get_projects/', methods=['GET'])
+@blueprint.route('/get_projects', methods=['GET'])
 def get_projects():
 	return dumps(db.projects.find())

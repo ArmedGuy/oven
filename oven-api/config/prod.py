@@ -1,3 +1,5 @@
+import os
+
 class ProductionConfig:
-    SQLALCHEMY_DATABASE_URI = 'mysqlite:////tmp/vortex.db'
-    APP_SECRET = "SJIASHDASHD"
+	DEBUG = False
+	SECRET_KEY= os.urandom(24)
