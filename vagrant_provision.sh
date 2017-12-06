@@ -14,6 +14,7 @@ sudo apt-get update
 sudo apt-get install -y mongodb-org
 sudo service mongod start
 pip install Flask-PyMongo
+pip install Flask-Session
 
 cd /vagrant/oven-app
 npm install -g aurelia-cli
