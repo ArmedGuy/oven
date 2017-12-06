@@ -11,6 +11,21 @@ html, body, .ide-frame {
     text-shadow: 0px 0px 1px rgba(255, 255, 255, 0.2);
 }
 
+input[type=button], input[type=submit], button {
+    font-family: 'Open Sans', Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-weight: 600;
+    color: white;
+}
+
+input[type=text] {
+    background-color: @bg-primary;
+    color: @text-primary;
+    min-width: 200px;
+    padding: 6px 12px;
+    border: none;
+}
+
+
 h1, h2, h3, h4, h5, h6, p, span {
     color: @text-primary;
 }
@@ -25,6 +40,7 @@ p {
 .btn {
     padding: 20px 40px;
     background-color: @color-status;
+    border: none;
     &:hover {
         background-color: darken(@color-status, 5%);
     }
@@ -264,6 +280,13 @@ p {
             }
             &.current {
                 background-color: @color-status;
+            }
+            &.disabled {
+                color: @text-menu;
+                background-color: @bg-secondary;
+            }
+            &.disabled:hover {
+                cursor: default;
             }
         }
     }

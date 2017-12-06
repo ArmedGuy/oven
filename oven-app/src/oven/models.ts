@@ -31,3 +31,12 @@ export class Project {
     _dirty: boolean;
     routes: Array<Route>;
 }
+
+export class Account {
+    id: string;
+    username: string;
+    email: string;
+    registered_date: Date;
+
+    _dirty: boolean;
+}

@@ -2,14 +2,21 @@ import {RouterConfiguration, Router} from 'aurelia-router';
 import {Editor} from './modules/editor';
 import { inject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
+import { OvenApi } from './oven/oven-api';
 
 @inject(Router, EventAggregator)
 export class App {
   
   router: RouterConfiguration;
   editor: Editor;
+  api: OvenApi;
   constructor(router: Router, eventAggregator: EventAggregator) {
-    this.editor = new Editor(router, eventAggregator);
+    this.api = new OvenApi;
+    this.api.getAccount().then((account) => {
+      this.editor = new Editor(router, eventAggregator);
+    }).catch(() => {
+        window.location.href = "https://weblogon.ltu.se/cas/login?service=" + location.href;
+    });
   }
   
   configureRouter(config, router){

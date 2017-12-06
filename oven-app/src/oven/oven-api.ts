@@ -1,5 +1,6 @@
-import { Project } from "./models";
+import { Project, Account } from "./models";
 import { getService } from "./software-service-factory";
+import { access } from "fs";
 
 export class OvenApi {
     static projects: Array<Project> = new Array<Project>();
@@ -32,6 +33,22 @@ export class OvenApi {
             project.code_file = "";
             OvenApi.projects.push(project);
             resolve(project);
+        });
+    }
+
+    getAccount(): Promise<Account> {
+        return new Promise<Account>((resolve, reject) => {
+            let loggedIn = window.location.href.indexOf("weblogon.ltu.se") != -1;
+
+            if(loggedIn) {
+                let account = new Account;
+                account.email = "test@test.com";
+                account.username = "test-user";
+                account.registered_date = new Date();
+                resolve(account);
+            } else {
+                reject();
+            }
         });
     }
 }
