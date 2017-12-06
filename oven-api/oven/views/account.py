@@ -13,7 +13,7 @@ db = client.oven
 
 blueprint = Blueprint('account', __name__, template_folder='templates')
 
-@blueprint.route('/get_session', methods=["GET"])
+@blueprint.route('/session', methods=["GET"])
 def get_session():
 	
 	# LTU CAS here
