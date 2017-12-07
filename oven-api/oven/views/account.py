@@ -19,7 +19,7 @@ def get_session():
 	# LTU CAS here
 	
 	# if login ok:	
-	session['user'] = 'Test_user'
+	session['user'] = 'test'
 	return "{'response':'Session created!'}"
 	
 	# else:
@@ -40,7 +40,25 @@ def drop():
 	else:
 		return "{'response':'You are not logged in...'}"
 	
-	
+@blueprint.route('/register', methods=["POST"])
+def register():
+	if request.method == 'POST':
+
+		existing_user = db.users.find_one({'user' : request.form['user']})
+		
+		if existing_user is not None:
+			return "{'response':'Error, user exists!'}"
+		else:
+			session.pop('username', None)
+			try:
+				db.users.insert({'user':request.form['user'],'mail':request.form['mail'],'create_date':datetime.now()})
+				session['user'] = request.form['user']
+				return "{'response':'Sucess, welcome to oven!'}"
+			except:
+				return "{'response':'Error, could not create user!'}"
+	else:
+		pass
+		
 	
 	
 	
