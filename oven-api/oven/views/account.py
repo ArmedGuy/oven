@@ -6,7 +6,7 @@ from datetime import datetime
 from pymongo import MongoClient
 from bson.json_util import dumps
 from flask_pymongo import PyMongo
-from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify
+from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
 
 client = MongoClient('localhost', 27017)
 db = client.oven
@@ -19,23 +19,26 @@ def get_session():
 	# LTU CAS here
 	
 	# if login ok:	
-	session['user'] = 'test'
-	return "{'response':'Session created!'}"
+	session['data'] = {'user':'test','mail':'test@not.me'}
+	g.session = session['data']
+	return "{'response':'Session created!'}" + dumps(g.session)
 	
 	# else:
 	#	return 'Login error!'
 	
 @blueprint.route('/verify', methods=["GET"])
 def verify():
-	if 'user' in session:
-		return session['user']
+	if g.session:
+		# For testiong ONLY
+		return dumps(g.session)
 	else:
 		return "{'response':'You are not logged in...'}"
 		
 @blueprint.route('/drop', methods=["GET"])
 def drop():
-	if 'user' in session:
-		session.pop('user', None)
+	if 'data' in session:
+		session.pop('data', None)
+		g.session = None
 		return 'Logged out!'
 	else:
 		return "{'response':'You are not logged in...'}"
@@ -54,11 +57,11 @@ def register():
 			elif existing_mail is not None:
 				return "{'response':'Error, mail exists!'}"
 			else:
-				session.pop('user', None)
+				session.pop('data', None)
 				
 				try:
 					db.users.insert({'user':request.form['user'],'mail':request.form['mail'],'create_date':datetime.now()})
-					session['user'] = request.form['user']
+					session['data'] = "{'user':" + request.form['user'] + ",'mail':" + request.form['mail'] + "}"
 					return "{'response':'Sucess, welcome to oven!'}"
 				except:
 					return "{'response':'Error, could not create user!'}"
