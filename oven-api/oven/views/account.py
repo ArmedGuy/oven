@@ -43,21 +43,27 @@ def drop():
 @blueprint.route('/register', methods=["POST"])
 def register():
 	if request.method == 'POST':
-		existing_user = db.users.find_one({'user' : request.form['user']})
-		existing_mail = db.users.find_one({'mail' : request.form['mail']})
-		
-		if existing_user is not None:
-			return "{'response':'Error, user exists!'}"
-		elif existing_mail is not None:
-			return "{'response':'Error, mail exists!'}"
+		tmp_mail = request.form['mail'].split("@")
+		if len(tmp_mail) >= 2 and len(tmp_mail[1].split(".")) >= 2 :
+	
+			existing_user = db.users.find_one({'user' : request.form['user']})
+			existing_mail = db.users.find_one({'mail' : request.form['mail']})
+			
+			if existing_user is not None:
+				return "{'response':'Error, user exists!'}"
+			elif existing_mail is not None:
+				return "{'response':'Error, mail exists!'}"
+			else:
+				session.pop('user', None)
+				
+				try:
+					db.users.insert({'user':request.form['user'],'mail':request.form['mail'],'create_date':datetime.now()})
+					session['user'] = request.form['user']
+					return "{'response':'Sucess, welcome to oven!'}"
+				except:
+					return "{'response':'Error, could not create user!'}"
 		else:
-			session.pop('username', None)
-			try:
-				db.users.insert({'user':request.form['user'],'mail':request.form['mail'],'create_date':datetime.now()})
-				session['user'] = request.form['user']
-				return "{'response':'Sucess, welcome to oven!'}"
-			except:
-				return "{'response':'Error, could not create user!'}"
+				return "{'response':'Enter a valid mail!'}"				
 	else:
 		return "{'tesponse':'Error, use POST and send user and mail'}"
 		
