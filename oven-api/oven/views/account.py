@@ -43,11 +43,13 @@ def drop():
 @blueprint.route('/register', methods=["POST"])
 def register():
 	if request.method == 'POST':
-
 		existing_user = db.users.find_one({'user' : request.form['user']})
+		existing_mail = db.users.find_one({'mail' : request.form['mail']})
 		
 		if existing_user is not None:
 			return "{'response':'Error, user exists!'}"
+		elif existing_mail is not None:
+			return "{'response':'Error, mail exists!'}"
 		else:
 			session.pop('username', None)
 			try:
@@ -57,7 +59,7 @@ def register():
 			except:
 				return "{'response':'Error, could not create user!'}"
 	else:
-		pass
+		return "{'tesponse':'Error, use POST and send user and mail'}"
 		
 	
 	
