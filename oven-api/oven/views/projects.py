@@ -28,21 +28,21 @@ def create(project):
 		except:
 			return "ERROR, no platform_id defined!"
 		try:
-			shortName = request.form['shortName']
+			short_name = request.form['short_name']
 		except:
-			return "ERROR, no shortName defined!"
+			return "ERROR, no short_name defined!"
 		try:
 			description = request.form['description']
 		except:
 			return "ERROR, no description defined!"
 		try:
-			shortDescription = request.form['shortDescription']
+			short_description = request.form['short_description']
 		except:
-			return "ERROR, no shortDescription defined!"
+			return "ERROR, no short_description defined!"
 		try:
-			codeFile = request.form['codeFile']
+			code_file = request.form['code_file']
 		except:
-			return "ERROR, no codeFile defined!"
+			return "ERROR, no code_file defined!"
 		try:
 			dependencies = request.form['dependencies']
 		except:
@@ -55,22 +55,52 @@ def create(project):
 		# Get the current time
 		create_date = datetime.now()
 		
+		# Verify the user
+		user = db.users.find_one({'mail':request.form['mail']})
+		
 		# Submit to database before return
-		#db.projects.insert({'software_id':software_id,'platform_id':platform_id,'shortName':shortName,'description':description,'shortDescription':shortDescription,'codeFile':codeFile,'dependencies':dependencies,'revision':revision,'create_date':create_date})
-		db.users.insert({'user':'test_test','mail':'mail@mail.mail', 'config':{'software_id':'1','platform_id':'1','shortName':'1','description':'1','shortDescription':'1','codeFile':'1','dependencies':'1','revision':'1','create_date':create_date}})
+		db.projects.insert({'created_by_user_id':user['_id'],'software_id':software_id,'platform_id':platform_id,'short_name':short_name,'description':description,'short_description':short_description,'code_file':code_file,'dependencies':dependencies,'revision':revision,'create_date':create_date})
+		
+		# for testing...
+		#user = db.users.find_one({'mail':'me@me.me'})
+		#db.projects.insert({'created_by_user_id':user['_id'],'user':user['user'],'mail':'mail@mail.mail', 'config':{'software_id':'1','platform_id':'1','shortName':'1','description':'1','shortDescription':'1','codeFile':'1','dependencies':'1','revision':'1','create_date':create_date}})
 
 		
 		return "Success!!\n" + project + " created on " + dumps(create_date) + "!\n"
 	else:
 		return "{'response':'You are not logged in...'}"
 	
-
-@blueprint.route('/get_projects', methods=['GET'])
+# Uses session to retrieve the user´s projects
+@blueprint.route('/', methods=['GET'])
 def get_projects():
-	return dumps(db.projects.find())
-	
-@blueprint.route('/t', methods=['GET'])
-def t():
 	if g.session:
-		return dumps(g.session)
-	return "{'response':'Not logget in, get a session!'}"
+	
+		user = g.session['user']
+		mail = g.session['mail']
+		
+		#Get the users _id. If the user is not found in the database, let the user know.
+		user_details = db.users.find_one({'user':user,'mail':mail})
+		if user_details == []:
+			return "{'response':'Error, you are not an registered user!'}"
+		_id = user_details['_id']
+		
+		# Now use the _id to find all the projects belonging to the user
+		user_projects = db.projects.find({'created_by_user_id':_id})	
+		if user_details == []:
+			return "{'response':'Error, you do not have any projects!'}"
+		projects = []
+		for project in user_projects:
+			projects.append(project['short_name'])
+		
+		# Create a phrase to return (This is for testing and will be replaced...)
+		return_phrase = ""
+		for name in projects:
+			return_phrase += name + "\n"
+		
+		return return_phrase
+			
+		
+	else:
+		return "{'response':'Error, try to login?'}"
+
+
