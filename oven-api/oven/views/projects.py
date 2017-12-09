@@ -16,7 +16,7 @@ blueprint = Blueprint('projects', __name__, template_folder='templates')
 # Used to create a project
 @blueprint.route('/create/<project>', methods=['POST'])
 def create(project):
-	if g.session:
+	if session:
 		
 			# Get parameters
 		try:
@@ -73,10 +73,10 @@ def create(project):
 # Uses session to retrieve the user´s projects
 @blueprint.route('/', methods=['GET'])
 def get_projects():
-	if g.session:
+	if session:
 	
-		user = g.session['user']
-		mail = g.session['mail']
+		user = session['user']
+		mail = session['mail']
 		
 		#Get the users _id. If the user is not found in the database, let the user know.
 		user_details = db.users.find_one({'user':user,'mail':mail})

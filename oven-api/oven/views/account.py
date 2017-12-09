@@ -19,26 +19,25 @@ def get_session():
 	# LTU CAS here
 	
 	# if login ok:	
-	session['data'] = {'user':'test','mail':'me@me.me'}
-	g.session = session['data']
-	return "{'response':'Session created!'}" + dumps(g.session)
+	session['user'] = 'test'
+	session['mail'] = 'me@me.me'
+	return "{'response':'Session created!'}" + dumps(session)
 	
 	# else:
 	#	return 'Login error!'
 	
 @blueprint.route('/verify', methods=["GET"])
 def verify():
-	if g.session:
+	if session:
 		# For testiong ONLY
-		return dumps(g.session)
+		return dumps(session)
 	else:
 		return "{'response':'You are not logged in...'}"
 		
 @blueprint.route('/drop', methods=["GET"])
 def drop():
-	if g.session:
+	if session:
 		session.pop('data', None)
-		g.session = None
 		return 'Logged out!'
 	else:
 		return "{'response':'You are not logged in...'}"

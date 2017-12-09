@@ -25,10 +25,3 @@ app.register_blueprint(projects.blueprint, url_prefix='/projects')
 # Set the lifetime of the session cookie
 app.permanent_session_lifetime = timedelta(days=1)
 
-@app.before_request
-def before_request():
-	g.session = None
-	session.permanent = True
-	if 'data' in session:
-		session.modified = True
-		g.session = session['data']
