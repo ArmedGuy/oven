@@ -60,7 +60,8 @@ def register():
 				
 				try:
 					db.users.insert({'user':request.form['user'],'mail':request.form['mail'],'create_date':datetime.now()})
-					session['data'] = "{'user':" + request.form['user'] + ",'mail':" + request.form['mail'] + "}"
+					session['user'] = request.form['user']
+					session['mail'] = request.form['mail']
 					return "{'response':'Sucess, welcome to oven!'}"
 				except:
 					return "{'response':'Error, could not create user!'}"
