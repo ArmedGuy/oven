@@ -39,11 +39,46 @@ p {
 
 .btn {
     padding: 20px 40px;
+    color: @text-primary;
+    text-decoration: none;
     background-color: @color-status;
     border: none;
     &:hover {
         background-color: darken(@color-status, 5%);
     }
+    &:visited {
+        color: @text-primary;
+    }
+}
+
+.ide-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    background-color: @bg-secondary;
+}
+.ide-login {
+    padding-top: 30vh;
+
+    .welcome {
+        width: 20vw;
+        margin: auto;
+        text-align: center;
+        h1 {
+            font-size: 72px;
+        }
+        p {
+            font-size: 22px;
+        }
+        a.btn {
+            display: block;
+            background-color: @color-primary;
+        }
+    }
+    
 }
 .ide-container {
     display: flex;

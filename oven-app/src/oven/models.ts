@@ -15,10 +15,8 @@ export class Route {
 export class Project {
     id: string;
     name: string;
-    short_name: string;
     short_description: string;
     user_id: string;
-    group_id: string;
     software_id: string;
     platform_id: string;
     code_file: string;

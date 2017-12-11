@@ -3,6 +3,7 @@ import {Editor} from './modules/editor';
 import { inject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { getApi, OvenApi } from './oven/oven-api';
+import environment from './environment';
 
 @inject(Router, EventAggregator)
 export class App {
@@ -10,12 +11,21 @@ export class App {
   router: RouterConfiguration;
   editor: Editor;
   api: OvenApi;
+  loginUrl: string;
+  loggedIn: boolean;
   constructor(router: Router, eventAggregator: EventAggregator) {
     this.api = getApi();
+    this.loginUrl = "https://weblogon.ltu.se/cas/login?service=" + environment.cas_service_url;
     this.api.getAccount().then((account) => {
-      this.editor = new Editor(router, eventAggregator);
+      console.log(account);
+      if(account) {
+        this.loggedIn = true;
+        this.editor = new Editor(router, eventAggregator);
+      } else {
+        //window.location.href = 
+      }
     }).catch(() => {
-        window.location.href = "https://weblogon.ltu.se/cas/login?service=" + location.href;
+        
     });
   }
   

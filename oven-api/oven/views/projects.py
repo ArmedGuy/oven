@@ -1,10 +1,10 @@
 import os
 
-from oven import app
+from oven import db, bsonify
 from flask import Flask
 from datetime import datetime
 from pymongo import MongoClient
-from bson.json_util import dumps as bson_dumps
+from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
 
@@ -14,19 +14,23 @@ blueprint = Blueprint('projects', __name__, template_folder='templates')
 @blueprint.route('/', methods=['POST'])
 def create():
 	if session.get('logged_in'):
-		
+
+		data = request.get_json()
+		name = data['name']
+		software_id = data['software_id']
+		platform_id = data['platform_id']
 		# Get the current time
 		create_date = datetime.now()
 		
 		# Submit to database before return
-		project_id = app.db.projects.insert(
+		project_id = db.projects.insert(
 			{
-				'user_id': sessio['user_id'],
+				'user_id': ObjectId(session['user_id']),
 				'software_id': software_id,
 				'platform_id': platform_id,
-				'short_name': short_name,
+				'name': short_name,
 				'description': "",
-				'short_description': short_description,
+				'short_description': "",
 				'code_file': "",
 				'dependencies': "",
 				'revision': 1,
@@ -34,8 +38,8 @@ def create():
 			}
 		)
 		
-		project = app.db.projects.find_one({ '_id': project_id })
-		return bson_dumps(project)
+		project = db.projects.find_one({ '_id': ObjectId(project_id) })
+		return bsonify(project)
 	else:
 		return jsonify({'response' : 'Forbidden'}), 403
 	
@@ -47,16 +51,20 @@ def get_projects():
 		
 		user_id = session['user_id']
 		
-		#Get the users _id. If the user is not found in the database, let the user know.
-		user = app.db.users.find_one({'_id': user_id})
-		if not user:
-			return jsonify({'response': 'User not found'}), 404
-		_id = user_details['_id']
-		
-		# Now use the _id to find all the projects belonging to the user
-		projects = app.db.projects.find({'user_id':_id})
-		return bson_dumps(projects)
+		projects = db.projects.find({'user_id': user_id})
+		return bsonify(projects)
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
 
 
+@blueprint.route('/<int:id>', methods=['GET'])
+def get_project(id):
+	if session.get('logged_in'):
+		user_id = session['user_id']
+		project = db.projects.find_one({'user_id': user_id, '_id': id})
+		if project is not None:
+			return bsonify(project)
+		else:
+			return jsonify({'response': 'Project not found'}), 404
+	else:
+		return jsonify({'response': 'Not logged in'}), 403

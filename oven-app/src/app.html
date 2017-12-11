@@ -1,6 +1,12 @@
 <template>
   <require from="normalize-css/normalize.css"></require>
   <require from="styles/ide.css"></require>
-
+  <div class="ide-fullscreen ide-login" if.bind="!loggedIn">
+    <div class="welcome">
+      <h1>Oven IDE</h1>
+      <p>Build beautiful and simple microservices with just a few clicks.</p>
+      <a href.bind="loginUrl" class="btn btn-primary">Log in with LTU</a>
+    </div>
+  </div>
   <compose view="modules/editor.html"></compose>
 </template>
