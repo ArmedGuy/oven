@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from datetime import timedelta
 from flask import Flask, g, session
+from pymongo import MongoClient
 
 app = Flask(__name__)
 

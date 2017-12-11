@@ -4,12 +4,10 @@ from oven import app
 from flask import Flask
 from datetime import datetime
 from pymongo import MongoClient
-from bson.json_util import bson_dumps
+from bson.json_util import dumps as bson_dumps
 from flask_pymongo import PyMongo
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
 from lxml import etree
-
-from app import db
 
 blueprint = Blueprint('account', __name__, template_folder='templates')
 
