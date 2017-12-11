@@ -23,7 +23,7 @@ install:
 
 script:
   - cd ./oven-app
-  - au build
+  - au build --env prod
   - cd ../
 
 after_success:

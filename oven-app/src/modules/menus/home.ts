@@ -1,8 +1,8 @@
-import {EditorPane} from '../panes/editor-pane';
-import {CreateProjectPane} from '../panes/create-project';
+import { EditorPane } from '../panes/editor-pane';
+import { CreateProjectPane } from '../panes/create-project';
 import { OpenProjectPane } from '../panes/open-project';
-import {OvenApi} from '../../oven/oven-api';
-import {Project} from '../../oven/models';
+import { OvenApi, getApi } from '../../oven/oven-api';
+import { Project } from '../../oven/models';
 import { autoinject, inject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import { Router } from 'aurelia-router';
@@ -22,7 +22,7 @@ export class HomeMenu {
         let open = new OpenProjectPane();
         this.availableActions.push(open);
 
-        this.api = new OvenApi;
+        this.api = getApi();
 
         this.api.getRecentProjects().then((projects) => {
             this.recentProjects = projects;

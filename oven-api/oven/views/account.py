@@ -4,43 +4,61 @@ from oven import app
 from flask import Flask
 from datetime import datetime
 from pymongo import MongoClient
-from bson.json_util import dumps
+from bson.json_util import bson_dumps
 from flask_pymongo import PyMongo
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
+from lxml import etree
 
-client = MongoClient('localhost', 27017)
-db = client.oven
+from app import db
 
 blueprint = Blueprint('account', __name__, template_folder='templates')
 
 @blueprint.route('/session', methods=["GET"])
 def get_session():
 	
-	# LTU CAS here
+	if session.get('logged_in'):
+		# fetch account from database and send, remove password if set
+		user = db.users.find_one({ "_id": session['user_id']})
+		return bson_dumps(user)
+	else:
+		return jsonify({ 'result': None })
 	
-	# if login ok:	
-	session['user'] = 'test'
-	session['mail'] = 'me@me.me'
-	return "{'response':'Session created!'}" + dumps(session)
-	
-	# else:
-	#	return 'Login error!'
-	
-@blueprint.route('/verify', methods=["GET"])
+@blueprint.route('/session/authenticate', methods=["GET"])
 def verify():
-	if session:
-		# For testiong ONLY
-		return dumps(session)
-	else:
-		return "{'response':'You are not logged in...'}"
+	ticket = request.args.get("ticket")
+	service = ""
+	if not ticket:
+		return redirect("/")
+	f = urllib.request.urlopen("https://weblogon.ltu.se/cas/serviceValidate?ticket={}&service={}".format(ticket, service))
+	tree = etree.parse(f)
+	if tree.getroot()[0].tag.endswith("authenticationSuccess"):
+		ideal = tree.getroot()[0][0].text
+		email = ""
+		if "-" in ideal:
+			email = "%s@student.ltu.se" % ideal
+		else:
+			email = "%s@ltu.se"
 		
-@blueprint.route('/drop', methods=["GET"])
-def drop():
-	if session:
-		session.pop('data', None)
-		return 'Logged out!'
+		existing_email = db.users.find_one({'email': email})
+		if existing_email is None:
+			session['user_id'] = db.users.insert({
+				'email': email,
+				'username': ideal,
+				'created_date': datetime.now()
+			})
+		else:
+			session['user_id'] = existing_email._id
+		session['logged_in'] = True
+		return redirect("/")
 	else:
-		return "{'response':'You are not logged in...'}"
+		return redirect("/") # TODO: actually return to some error page
+		
+@blueprint.route('/session/logout', methods=["GET"])
+def logout():
+	if session.get("logged_in"):
+		session['logged_in'] = False
+	return redirect("/")
+	
 	
 @blueprint.route('/register', methods=["POST"])
 def register():

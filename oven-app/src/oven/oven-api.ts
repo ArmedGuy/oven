@@ -1,8 +1,20 @@
 import { Project, Account } from "./models";
+import environment from '../environment';
 import { getService } from "./software-service-factory";
 import { access } from "fs";
-
-export class OvenApi {
+export function getApi() {
+    switch(environment.api_type) {
+        case 'mock':
+            return new MockOvenApi();
+    }
+}
+export interface OvenApi {
+    getRecentProjects(): Promise<Array<Project>>;
+    getProject(id: string): Promise<Project>;
+    createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
+    getAccount(): Promise<Account>;
+}
+export class MockOvenApi implements OvenApi {
     static projects: Array<Project> = new Array<Project>();
     constructor() {
         
@@ -10,17 +22,17 @@ export class OvenApi {
 
     getRecentProjects(): Promise<Array<Project>> {
         return new Promise<Array<Project>>((resolve, reject) => {
-            resolve(OvenApi.projects);
+            resolve(MockOvenApi.projects);
         });
         
     }
 
     getProject(id: string): Promise<Project> {
         return new Promise<Project>((resolve, reject) => {
-            let project = OvenApi.projects.filter(x => x.id == id)[0];
+            let project = MockOvenApi.projects.filter(x => x.id == id)[0];
             getService(project.software_id).parseProject(project);
 
-            resolve(OvenApi.projects.filter(x => x.id == id)[0]);
+            resolve(MockOvenApi.projects.filter(x => x.id == id)[0]);
         });
     }
 
@@ -31,7 +43,7 @@ export class OvenApi {
             project.name = name;
             project.software_id = software;
             project.code_file = "";
-            OvenApi.projects.push(project);
+            MockOvenApi.projects.push(project);
             resolve(project);
         });
     }
@@ -94,4 +106,4 @@ project3.id = "blablabla";
 project3.name = "oven-api2";
 project3.software_id = "python3flask";
 project3.code_file = "";
-OvenApi.projects.push(project1, project2, project3);
+MockOvenApi.projects.push(project1, project2, project3);

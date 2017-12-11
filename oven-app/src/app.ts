@@ -2,7 +2,7 @@ import {RouterConfiguration, Router} from 'aurelia-router';
 import {Editor} from './modules/editor';
 import { inject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
-import { OvenApi } from './oven/oven-api';
+import { getApi, OvenApi } from './oven/oven-api';
 
 @inject(Router, EventAggregator)
 export class App {
@@ -11,7 +11,7 @@ export class App {
   editor: Editor;
   api: OvenApi;
   constructor(router: Router, eventAggregator: EventAggregator) {
-    this.api = new OvenApi;
+    this.api = getApi();
     this.api.getAccount().then((account) => {
       this.editor = new Editor(router, eventAggregator);
     }).catch(() => {

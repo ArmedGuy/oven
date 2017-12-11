@@ -1,4 +1,6 @@
 export default {
   debug: true,
-  testing: true
+  testing: true,
+  api_path: true,
+  api_type: 'mock'
 };

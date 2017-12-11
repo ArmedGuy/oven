@@ -1,5 +1,5 @@
 import { EditorPane } from "./editor-pane";
-import { OvenApi } from "../../oven/oven-api";
+import { OvenApi, getApi } from "../../oven/oven-api";
 
 import {EventAggregator} from 'aurelia-event-aggregator';
 import { autoinject } from "aurelia-framework";
@@ -21,7 +21,7 @@ export class CreateProjectPane implements EditorPane{
         this.eventAggregator = eventAggregator;
         this.router = router;
 
-        this.api = new OvenApi;
+        this.api = getApi();
     }
 
     get displayName(): string {

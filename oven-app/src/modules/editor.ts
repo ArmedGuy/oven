@@ -1,7 +1,7 @@
 import {EditorPane} from './panes/editor-pane';
 import {WelcomePane} from './panes/welcome';
 import { Project } from '../oven/models';
-import { OvenApi } from '../oven/oven-api';
+import { OvenApi, getApi } from '../oven/oven-api';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -17,7 +17,7 @@ export class Editor {
   constructor(router: Router, eventAggregator: EventAggregator) {
     this.router = router;
     this.openPanes = new Array<EditorPane>();
-    this.api = new OvenApi;
+    this.api = getApi();
     this.eventAggregator = eventAggregator;
 
     let welcome = new WelcomePane();

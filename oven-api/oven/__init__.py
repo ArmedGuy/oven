@@ -19,6 +19,9 @@ else:
 
 app.secret_key = app.config['SECRET_KEY']
 
+client = MongoClient('localhost', 27017)
+db = client.oven
+
 app.register_blueprint(account.blueprint, url_prefix='/account')
 app.register_blueprint(projects.blueprint, url_prefix='/projects')
 
