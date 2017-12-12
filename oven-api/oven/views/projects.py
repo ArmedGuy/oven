@@ -7,7 +7,7 @@ from oven import db, bsonify
 from datetime import datetime
 from bson.objectid import ObjectId
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
-import nomadapi
+from oven.nomadapi import *
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
 
@@ -87,10 +87,97 @@ def save_project(id):
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
 		
-		
-@blueprint.route('/a', methods=['GET'])
+@blueprint.route('/<id>/deploy', methods=['GET'])
 def create_job():		
-	Job = {"Job": {"ID": "example", "Name": "example", "Type": "service", "Priority": 50, "Datacenters": ["dh2"], "TaskGroups": [{"Name": "cache", "Count": 1, "Tasks": [{ "Name": "redis", "Driver": "docker", "User": "", "Config": { "image": "redis:3.2", "port_map": [{ "www": 80 }] }, "Services": [{ "Id": "", "Name": "global-redis-check", "Tags": [ "global", "cache" ], "PortLabel": "www", "AddressMode": "", "Checks": [{"Id": "","Name": "alive","Type": "tcp","Command": "","Path": "","Protocol": "","PortLabel": "","Interval": 10000000000,"Timeout": 2000000000,"InitialStatus": "","TLSSkipVerify": False}]}],"Resources": {"CPU": 500,"MemoryMB": 256,"Networks": [{"IP": "","MBits": 10,"DynamicPorts": [{"Label": "www","Value": 0}]}]},"Leader": False}],"RestartPolicy": {"Interval": 300000000000,"Attempts": 10,"Delay": 25000000000,"Mode": "delay"},"EphemeralDisk": {"SizeMB": 300}}],"Update": {"MaxParallel": 1,"MinHealthyTime": 10000000000,"HealthyDeadline": 180000000000,"AutoRevert": False,"Canary": 0}}}
-	register_job('test', Job)
+	job = {"job" : {
+					  "ID":id,
+					  "Name":"test_name",
+					  "Type":"test_type",
+					  "Priority":50,
+					  "Datacenters":[
+						 "dh2"
+					  ],
+					  "TaskGroups":[
+						 {
+							"Name":"cache",
+							"Count":1,
+							"Tasks":[
+							   {
+								  "Name":"redis",
+								  "Driver":"docker",
+								  "User":"",
+								  "Config":{
+									 "image":"armedguy/oven-python3flask",
+									 "port_map":[
+										{
+										   "www":80
+										}
+									 ]
+								  },
+								  "Services":[
+									 {
+										"Id":"",
+										"Name":id,
+										"Tags":[
+										   "global",
+										   "cache"
+										],
+										"PortLabel":"www",
+										"AddressMode":"",
+										"Checks":[
+										   {
+											  "Id":"",
+											  "Name":"",
+											  "Type":"tcp",
+											  "Command":"",
+											  "Path":"",
+											  "Protocol":"",
+											  "PortLabel":"",
+											  "Interval":"",
+											  "Timeout":"",
+											  "InitialStatus":""
+										   }
+										]
+									 }
+								  ],
+								  "Resources":{
+									 "CPU":500,
+									 "MemoryMB":256,
+									 "Networks":[
+										{
+										   "IP":"",
+										   "MBits":10,
+										   "DynamicPorts":[
+											  {
+												 "Label":"www",
+												 "Value":0
+											  }
+										   ]
+										}
+									 ]
+								  }
+							   }
+							],
+							"RestartPolicy":{
+							   "Interval":"",
+							   "Attempts":"",
+							   "Delay":"",
+							   "Mode":""
+							},
+							"EphemeralDisk":{
+							   "SizeMB":300
+							}
+						 }
+					  ],
+					  "Update":{
+						 "MaxParallel":1,
+						 "MinHealthyTime":10000000000,
+						 "HealthyDeadline":180000000000,
+						 "Canary":0
+					  }
+				   }
+				}
+				
+	return register_job(job)
 	
 
