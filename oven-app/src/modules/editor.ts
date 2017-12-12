@@ -23,6 +23,11 @@ export class Editor {
     let welcome = new WelcomePane();
     this.openPane(welcome);
     
+    let saveProject = () => {
+        this.eventAggregator.publish('save project');
+        setTimeout(saveProject, 15000);
+    };
+    saveProject();
     this.subscribe();
   }
 
@@ -36,6 +41,12 @@ export class Editor {
         this.currentProject = project;
         this.eventAggregator.publish('project loaded', project);
       });
+    });
+    this.eventAggregator.subscribe('save project', () => {
+      if(this.currentProject != null) {
+        console.log("save project");
+        this.api.saveProject(this.currentProject);
+      }
     });
     this.eventAggregator.subscribe('open pane', (pane) => {
       this.openPane(pane);
@@ -72,6 +83,6 @@ export class Editor {
 
   openProject(project: Project) {
     this.currentProject = project;
-    this.router.navigateToRoute('project', { id: project.id });
+    this.router.navigateToRoute('project', { id: project._id });
   }
 }

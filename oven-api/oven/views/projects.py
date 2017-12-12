@@ -28,7 +28,7 @@ def create():
 				'user_id': ObjectId(session['user_id']),
 				'software_id': software_id,
 				'platform_id': platform_id,
-				'name': short_name,
+				'name': name,
 				'description': "",
 				'short_description': "",
 				'code_file': "",
@@ -38,7 +38,7 @@ def create():
 			}
 		)
 		
-		project = db.projects.find_one({ '_id': ObjectId(project_id) })
+		project = db.projects.find_one({ '_id': project_id })
 		return bsonify(project)
 	else:
 		return jsonify({'response' : 'Forbidden'}), 403
@@ -55,14 +55,30 @@ def get_projects():
 		return bsonify(projects)
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
-	
-@blueprint.route('/<int:id>', methods=['GET'])
+
+
+@blueprint.route('/<id>', methods=['GET'])
 def get_project(id):
 	if session.get('logged_in'):
 		user_id = session['user_id']
-		project = db.projects.find_one({'user_id': user_id, '_id': id})
+		project = db.projects.find_one({'user_id': ObjectId(user_id), '_id': ObjectId(id)})
 		if project is not None:
 			return bsonify(project)
+		else:
+			return jsonify({'response': 'Project not found'}), 404
+	else:
+		return jsonify({'response': 'Not logged in'}), 403
+
+@blueprint.route('/<id>', methods=['PUT'])
+def save_project(id):
+	if session.get('logged_in'):
+		user_id = session['user_id']
+		project = db.projects.find_one_and_update(
+			{'user_id': ObjectId(user_id), '_id': ObjectId(id)},
+			{'$set': request.get_json()},
+		)
+		if project is not None:
+			return jsonify({'response': 'OK'})
 		else:
 			return jsonify({'response': 'Project not found'}), 404
 	else:

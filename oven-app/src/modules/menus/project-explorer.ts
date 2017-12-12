@@ -4,6 +4,7 @@ import { RouteConfig } from 'aurelia-router';
 import { EditorPane } from '../panes/editor-pane';
 import { Project, Route } from '../../oven/models';
 import { RoutePane } from '../panes/route-pane';
+import {activationStrategy} from 'aurelia-router';
 
 @autoinject
 export class ProjectExplorer {
@@ -17,6 +18,10 @@ export class ProjectExplorer {
         this.subscribe();
     }
 
+    determineActivationStrategy() {
+        return activationStrategy.replace;
+    }
+
     subscribe() {
         this.eventAggregator.subscribe('project loaded', (project: Project) => {
             this.project = project;
@@ -28,7 +33,13 @@ export class ProjectExplorer {
     }
 
     activate(params: any, routeConfig: RouteConfig) {
-        this.eventAggregator.publish('open project', params.id);
+        setTimeout(() => {
+            this.eventAggregator.publish('open project', params.id);
+        }, 300);
+    }
+
+    created() {
+
     }
 
     addNewRoute() {

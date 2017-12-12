@@ -41,14 +41,31 @@ export class Python3FlaskSoftwareService implements SoftwareService {
                     } else if(line.startsWith("# oven:route:name")) {
                         route.name = line.replace("# oven:route:name=", "");
                     } else {
-                        buffer.push(line);
+                        buffer.push(line.replace("    ", ""));
                     }
                     break;
             }
         });
     }
     compileProject(project: Project) {
-        throw new Error("Method not implemented.");
+        let code_file = "";
+        project.routes.forEach((route) => {
+            code_file += "# oven:route:start\n";
+            code_file += "# oven:route:start_pre\n";
+            code_file += route.prepend_content + "\n";
+            code_file += "# oven:route:end_pre\n";
+            code_file += "# oven:route:name=" + route.name + "\n";
+            code_file += "# oven:route:url=" + route.httpMethod + route.url + "\n";
+            code_file += "# oven:route:start_code\n";
+            route.content.split('\n').forEach(line => {
+                code_file += "    " + line + "\n";
+            });
+            code_file += "# oven:route:end_code\n";
+            code_file += "# oven:route:end\n";
+            // TODO: compile documentation
+        });
+        project.code_file = code_file;
+        console.log(code_file);
     }
     
 }

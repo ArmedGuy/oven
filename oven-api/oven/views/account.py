@@ -35,11 +35,11 @@ def verify():
 		
 		existing_email = db.users.find_one({'email': email})
 		if existing_email is None:
-			session['user_id'] = db.users.insert({
+			session['user_id'] = str(db.users.insert({
 				'email': email,
 				'username': ideal,
 				'created_date': datetime.now()
-			})
+			}))
 		else:
 			session['user_id'] = str(existing_email['_id'])
 		session['logged_in'] = True

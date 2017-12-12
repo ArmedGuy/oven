@@ -22,7 +22,6 @@ export class App {
         this.loggedIn = true;
         this.editor = new Editor(router, eventAggregator);
       } else {
-        //window.location.href = 
       }
     }).catch(() => {
         

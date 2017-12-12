@@ -5,7 +5,8 @@ The flask application package.
 import os
 from datetime import datetime
 from datetime import timedelta
-from bson.json_util import dumps as bson_dumps
+import json
+from bson.json_util import dumps as bson_dumps, RELAXED_JSON_OPTIONS
 from flask import Flask, g, session, request, make_response
 from pymongo import MongoClient
 
@@ -21,7 +22,7 @@ client = MongoClient('localhost', 27017)
 db = client.oven
 
 def bsonify(bson_data):
-    response = make_response(bson_dumps(bson_data))
+    response = make_response(bson_dumps(bson_data, json_options=RELAXED_JSON_OPTIONS))
     response.headers['Content-Type'] = 'application/json'
     return response
 
@@ -40,6 +41,8 @@ def after_request(response):
     header = response.headers
     header['Access-Control-Allow-Origin'] = 'http://localhost:9000'
     header['Access-Control-Allow-Credentials'] = 'true'
+    header['Access-Control-Allow-Headers'] = "Content-Type"
+    header['Access-Control-Allow-Methods'] = "OPTIONS,GET,PUT,POST,DELETE"
     header['Vary'] = 'Origin'
     return response
 

@@ -1,7 +1,7 @@
 import { Project, Account } from "./models";
 import environment from '../environment';
 import { getService } from "./software-service-factory";
-import { HttpClient } from "aurelia-fetch-client";
+import { HttpClient, json } from "aurelia-fetch-client";
 export function getApi() {
     switch(environment.api_type) {
         case 'mock':
@@ -13,9 +13,18 @@ export function getApi() {
 export interface OvenApi {
     getRecentProjects(): Promise<Array<Project>>;
     getProject(id: string): Promise<Project>;
+    saveProject(project: Project);
     createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
     getAccount(): Promise<Account>;
 }
+let projectMappingFields = ["name",
+                            "short_description",
+                            "software_id",
+                            "platform_id",
+                            "code_file",
+                            "dependencies",
+                            "revision",
+                            "documentation"];
 
 export class WebOvenApi implements OvenApi {
     client: HttpClient;
@@ -39,15 +48,58 @@ export class WebOvenApi implements OvenApi {
             this.client.fetch('projects/' + id, {
                 method: 'get'
             }).then(response => response.json())
+            .then(response => {
+                let p = new Project;
+                p._id = response._id["$oid"];
+                p.user_id = response.user_id["$oid"];
+                projectMappingFields.forEach(field => {
+                    p[field] = response[field];
+                });
+                getService(p.software_id).parseProject(p);
+                return p;
+            })
             .then(project => resolve(project))
             .catch((error => {
-                reject("Failed to fetch project");
+                reject(error);
             }))
         });
         
     }
-    createProject(id: string, software_id: string, platform_id: string): Promise<Project> {
-        throw new Error("Method not implemented.");
+
+    saveProject(project: Project) {
+        getService(project.software_id).compileProject(project);
+        let sendProject = {};
+        projectMappingFields.forEach(field => {
+            sendProject[field] = project[field];
+        });
+        this.client.fetch("projects/" + project._id, {
+            method: 'put',
+            body: json(sendProject)
+        });
+    }
+
+    createProject(name: string, software_id: string, platform_id: string): Promise<Project> {
+        let project = new Project();
+        project.name = name;
+        project.software_id = software_id;
+        project.platform_id = platform_id;
+        return new Promise<Project>((resolve, reject) => {
+                this.client.fetch("projects/", {
+                    method: 'post',
+                    body: json(project)
+                }).then(response => response.json())
+                .then(response => {
+                    project._id = response._id["$oid"];
+                    project.user_id = response.user_id["$oid"];
+                    projectMappingFields.forEach(field => {
+                        project[field] = response[field];
+                    });
+                    getService(project.software_id).parseProject(project);
+                    return project;
+                })
+                .then(project => resolve(project))
+                .catch(error => reject(error));
+        });
     }
     getAccount(): Promise<Account> {
         return new Promise<Account>((resolve, reject) => {
@@ -77,17 +129,21 @@ export class MockOvenApi implements OvenApi {
 
     getProject(id: string): Promise<Project> {
         return new Promise<Project>((resolve, reject) => {
-            let project = MockOvenApi.projects.filter(x => x.id == id)[0];
+            let project = MockOvenApi.projects.filter(x => x._id == id)[0];
             getService(project.software_id).parseProject(project);
 
-            resolve(MockOvenApi.projects.filter(x => x.id == id)[0]);
+            resolve(MockOvenApi.projects.filter(x => x._id == id)[0]);
         });
+    }
+
+    saveProject(project: Project) {
+
     }
 
     createProject(name: string, software: string, platform: string) {
         return new Promise<Project>((resolve, reject) => {
             let project = new Project();
-            project.id = "blablablabla";
+            project._id = "blablablabla";
             project.name = name;
             project.software_id = software;
             project.code_file = "";
@@ -114,7 +170,7 @@ export class MockOvenApi implements OvenApi {
 }
 
 let project1 = new Project();
-project1.id = "bla";
+project1._id = "bla";
 project1.name = "oven-api";
 project1.software_id = "python3flask";
 project1.code_file = `
@@ -146,11 +202,11 @@ def get_group_by_id(id):
 `;
 
 let project2 = new Project();
-project2.id = "blabla";
+project2._id = "blabla";
 project2.name = "gpp";
 
 let project3 = new Project();
-project3.id = "blablabla";
+project3._id = "blablabla";
 project3.name = "oven-api2";
 project3.software_id = "python3flask";
 project3.code_file = "";

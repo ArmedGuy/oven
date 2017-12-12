@@ -16,7 +16,7 @@ export class CreateProjectPane implements EditorPane{
     
 
     constructor(eventAggregator: EventAggregator, router: Router) {
-        this.name = "Create project";
+        this.name = "New microservice";
         this.template = "modules/panes/create-project.html";
         this.eventAggregator = eventAggregator;
         this.router = router;
@@ -47,7 +47,8 @@ export class CreateProjectPane implements EditorPane{
     createProject() {
         this.api.createProject(this.projectName, this.software, this.platform).then((project) => {
             this.eventAggregator.publish('close pane', this);
-            this.router.navigateToRoute("project", { id: project.id });
+            console.log(project);
+            this.router.navigateToRoute("project", { id: project._id });
             this.eventAggregator.publish('open pane', new NewProjectPane);
         });
     }

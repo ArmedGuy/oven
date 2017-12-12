@@ -13,7 +13,7 @@ export class Route {
     }
 }
 export class Project {
-    id: string;
+    _id: any;
     name: string;
     short_description: string;
     user_id: string;
