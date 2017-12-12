@@ -20,7 +20,7 @@ def get_session():
 @blueprint.route('/session/authenticate', methods=["GET"])
 def verify():
 	ticket = request.args.get("ticket")
-	service = app.config['CAS_SERIVCE']
+	service = app.config['CAS_SERVICE']
 	if not ticket:
 		return redirect("/")
 	f = urllib.request.urlopen("https://weblogon.ltu.se/cas/serviceValidate?ticket={}&service={}".format(ticket, service))

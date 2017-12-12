@@ -11,10 +11,6 @@ import nomad
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
 
-def nomad_setup():
-	n = nomad.Nomad(host=os.environ.get("NOMAD_IP", "130.240.16.191"), port=os.environ.get("NOMAD_PORT", 8301))
-	return n
-
 # Used to create a project
 @blueprint.route('/', methods=['POST'])
 def create():
@@ -63,10 +59,11 @@ def get_projects():
 		
 
 
-@blueprint.route('/jobs', methods=['GET'])
-def test():
-	nomad_setup = nomad.Nomad(host=os.environ.get("NOMAD_IP", "130.240.16.191"), port=os.environ.get("NOMAD_PORT", 8301))
-	return bson_dumps(nomad_setup.agent.get_servers())
+@blueprint.route('/nomad', methods=['GET'])
+def nomad():
+	nomad_connection = nomad.Nomad(host=app.config['NOMAD_IP'], port=app.config['NOMAD_PORT'])
+	#a = nomad_connection.agent.get_members()
+	return "Hej" + nomad_connection.nodes.get_nodes()
 
 
 @blueprint.route('/<int:id>', methods=['GET'])
