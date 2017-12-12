@@ -1,5 +1,6 @@
 import os
 
+import pytest
 from oven import app
 from flask import Flask
 from datetime import datetime
@@ -7,8 +8,13 @@ from pymongo import MongoClient
 from bson.json_util import dumps as bson_dumps
 from flask_pymongo import PyMongo
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
+import nomad
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
+
+def nomad_setup():
+	n = nomad.Nomad(host=os.environ.get("NOMAD_IP", "130.240.16.191"), port=os.environ.get("NOMAD_PORT", 8301))
+	return n
 
 # Used to create a project
 @blueprint.route('/', methods=['POST'])
@@ -58,5 +64,12 @@ def get_projects():
 		return bson_dumps(projects)
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
+		
+
+
+@blueprint.route('/jobs', methods=['GET'])
+def test():
+	nomad_setup = nomad.Nomad(host=os.environ.get("NOMAD_IP", "130.240.16.191"), port=os.environ.get("NOMAD_PORT", 8301))
+	return bson_dumps(nomad_setup.agent.get_servers())
 
 

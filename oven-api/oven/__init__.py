@@ -27,5 +27,5 @@ app.register_blueprint(account.blueprint, url_prefix='/account')
 app.register_blueprint(projects.blueprint, url_prefix='/projects')
 
 # Set the lifetime of the session cookie
-app.permanent_session_lifetime = timedelta(days=1)
+#app.permanent_session_lifetime = timedelta(days=1)
 
