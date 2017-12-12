@@ -7,7 +7,6 @@ from oven import db, bsonify
 from datetime import datetime
 from bson.objectid import ObjectId
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
-import nomad
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
 
@@ -56,16 +55,7 @@ def get_projects():
 		return bsonify(projects)
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
-		
-
-
-@blueprint.route('/nomad', methods=['GET'])
-def nomad():
-	nomad_connection = nomad.Nomad(host=app.config['NOMAD_IP'], port=app.config['NOMAD_PORT'])
-	#a = nomad_connection.agent.get_members()
-	return "Hej" + nomad_connection.nodes.get_nodes()
-
-
+	
 @blueprint.route('/<int:id>', methods=['GET'])
 def get_project(id):
 	if session.get('logged_in'):
