@@ -4,3 +4,4 @@ class ProductionConfig:
 	TEMPLATES_AUTO_RELOAD = False
 	SESSION_COOKIE_NAME = 'oven_api_session'
 	SESSION_COOKIE_HTTPONLY = False
+	CAS_SERVICE = "http://bulbasaur.campus.ltu.se/api/account/session/authenticate"

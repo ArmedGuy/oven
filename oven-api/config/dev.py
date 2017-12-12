@@ -4,3 +4,4 @@ class DevelopmentConfig:
 	TEMPLATES_AUTO_RELOAD = True
 	SESSION_COOKIE_NAME = 'oven_api_session'
 	SESSION_COOKIE_HTTPONLY = False
+	CAS_SERVICE = "http://localhost:5555/account/session/authenticate"

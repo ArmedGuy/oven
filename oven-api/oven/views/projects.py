@@ -1,11 +1,8 @@
 import os
 
 from oven import db, bsonify
-from flask import Flask
 from datetime import datetime
-from pymongo import MongoClient
 from bson.objectid import ObjectId
-from flask_pymongo import PyMongo
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
