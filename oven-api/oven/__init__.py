@@ -27,9 +27,8 @@ def bsonify(bson_data):
     return response
 
 
-from .views import account, projects, nomad
+from .views import account, projects
 
-app.register_blueprint(nomad.blueprint, url_prefix='/nomad')
 app.register_blueprint(account.blueprint, url_prefix='/account')
 app.register_blueprint(projects.blueprint, url_prefix='/projects')
 
