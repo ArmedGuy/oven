@@ -1,11 +1,13 @@
 import { Project, Account } from "./models";
 import environment from '../environment';
 import { getService } from "./software-service-factory";
-import { access } from "fs";
+import { HttpClient } from "aurelia-fetch-client";
 export function getApi() {
     switch(environment.api_type) {
         case 'mock':
             return new MockOvenApi();
+        case 'web':
+            return new WebOvenApi();
     }
 }
 export interface OvenApi {
@@ -13,6 +15,52 @@ export interface OvenApi {
     getProject(id: string): Promise<Project>;
     createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
     getAccount(): Promise<Account>;
+}
+
+export class WebOvenApi implements OvenApi {
+    client: HttpClient;
+    constructor() {
+        this.client = new HttpClient;
+        this.client.configure((config) => {
+            config
+                .withBaseUrl(environment.api_path)
+                .withDefaults({
+                    credentials: "include"
+                });
+        });
+    }
+    getRecentProjects(): Promise<Project[]> {
+        return new Promise((resolve, reject) => {
+            resolve([]);
+        });
+    }
+    getProject(id: string): Promise<Project> {
+        return new Promise<Project>((resolve, reject) => {
+            this.client.fetch('projects/' + id, {
+                method: 'get'
+            }).then(response => response.json())
+            .then(project => resolve(project))
+            .catch((error => {
+                reject("Failed to fetch project");
+            }))
+        });
+        
+    }
+    createProject(id: string, software_id: string, platform_id: string): Promise<Project> {
+        throw new Error("Method not implemented.");
+    }
+    getAccount(): Promise<Account> {
+        return new Promise<Account>((resolve, reject) => {
+            this.client.fetch('account/session', {
+                method: 'get'
+            }).then(response => response.json())
+            .then(account => resolve(account))
+            .catch(error => {
+                console.log(error);
+                reject(error);
+            });
+        })
+    }
 }
 export class MockOvenApi implements OvenApi {
     static projects: Array<Project> = new Array<Project>();

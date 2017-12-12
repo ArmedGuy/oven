@@ -1,11 +1,9 @@
 import os
-
-from oven import app
-from flask import Flask
+import urllib
+import urllib.request
+from oven import app, db, bsonify
 from datetime import datetime
-from pymongo import MongoClient
-from bson.json_util import dumps as bson_dumps
-from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
 from lxml import etree
 
@@ -13,18 +11,16 @@ blueprint = Blueprint('account', __name__, template_folder='templates')
 
 @blueprint.route('/session', methods=["GET"])
 def get_session():
-	
 	if session.get('logged_in'):
-		# fetch account from database and send, remove password if set
-		user = db.users.find_one({ "_id": session['user_id']})
-		return bson_dumps(user)
+		user = db.users.find_one({ "_id": ObjectId(session['user_id'])})
+		return bsonify(user)
 	else:
-		return jsonify({ 'result': None })
+		return jsonify(None)
 	
 @blueprint.route('/session/authenticate', methods=["GET"])
 def verify():
 	ticket = request.args.get("ticket")
-	service = ""
+	service = app.config['CAS_SERIVCE']
 	if not ticket:
 		return redirect("/")
 	f = urllib.request.urlopen("https://weblogon.ltu.se/cas/serviceValidate?ticket={}&service={}".format(ticket, service))
@@ -45,11 +41,11 @@ def verify():
 				'created_date': datetime.now()
 			})
 		else:
-			session['user_id'] = existing_email._id
+			session['user_id'] = str(existing_email['_id'])
 		session['logged_in'] = True
-		return redirect("/")
+		return redirect("http://localhost:9000")
 	else:
-		return redirect("/") # TODO: actually return to some error page
+		return redirect("/error") # TODO: actually return to some error page
 		
 @blueprint.route('/session/logout', methods=["GET"])
 def logout():
