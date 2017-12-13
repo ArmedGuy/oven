@@ -5,7 +5,7 @@ services:
 
 before_install:
   - echo "Logging in to Docker Hub"
-  - docker login -e=$DOCKER_EMAIL -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+  - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
   - echo "Logged in to Docker"
 install:
   - curl -sL https://deb.nodesource.com/setup_6.x | sudo bash -
@@ -27,7 +27,7 @@ script:
   - cd ../
 
 after_success:
-  - docker login -e=$DOCKER_EMAIL -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+  - docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
   - export REPO=armedguy/oven
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker build -t $REPO:$TRAVIS_COMMIT .
