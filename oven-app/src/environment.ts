@@ -1,7 +1,7 @@
 export default {
-  debug: true,
-  testing: true,
+  debug: false,
+  testing: false,
   api_type: 'web',
-  api_path: 'http://localhost:5555/api/',
-  cas_service_url: 'http://localhost:5555/account/session/authenticate'
+  api_path: "http://" + location.hostname + '/api/',
+  cas_service_url: 'http://' + location.hostname + '/api/account/session/authenticate'
 };

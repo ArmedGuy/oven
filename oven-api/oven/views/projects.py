@@ -14,8 +14,6 @@ blueprint = Blueprint('projects', __name__, template_folder='templates')
 @blueprint.route('/', methods=['POST'])
 def create():
 	if session.get('logged_in'):
-
-		hash = os.urandom(8)
 		data = request.get_json()
 		name = data['name']
 		software_id = data['software_id']
@@ -26,7 +24,6 @@ def create():
 		# Submit to database before return
 		project_id = db.projects.insert(
 			{
-				'hash' : hash,
 				'user_id': ObjectId(session['user_id']),
 				'software_id': software_id,
 				'platform_id': platform_id,
@@ -71,10 +68,10 @@ def get_project(id):
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
 
-@blueprint.route('/<id>/code/<hash>', methods=['GET'])
-def get_project_code(id, hash):
+@blueprint.route('/<id>/code/', methods=['GET'])
+def get_project_code(id):
 	project_id = ObjectId(id)
-	project = db.projects.find_one({'_id': project_id, 'hash': hash})
+	project = db.projects.find_one({'_id': project_id})
 	return project['code_file']
 
 @blueprint.route('/<id>', methods=['PUT'])
@@ -102,7 +99,7 @@ def deploy_project(id):
 	name = "{}-{}-{}".format(user['username'], project['name'], "bla")
 	task_name = "{}-{}".format(user['username'], project['name'])
 	url_prefix = "/oven/api/{}/{}".format(user['username'], project['name'])
-	artifact_url = "{}/projects/{}/code/{}".format(app.config['API_URL'], id, project['hash'])
+	artifact_url = "{}/projects/{}/code/".format(app.config['API_URL'], id)
 	job = {
 		"job": {
 			"ID": id,
