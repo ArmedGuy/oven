@@ -6,7 +6,6 @@ class ProductionConfig:
 	SESSION_COOKIE_HTTPONLY = False
 	NOMAD_IP = '130.240.16.191'
 	NOMAD_PORT = 8301
-	APPLICATION_ROOT = "/api"
 	FRONTEND_URL = "http://bulbasaur.campus.ltu.se/"
 	API_URL = "http://bulbasaur.campus.ltu.se/api/"
 	CAS_SERVICE = "http://bulbasaur.campus.ltu.se/api/account/session/authenticate"

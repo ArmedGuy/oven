@@ -29,8 +29,8 @@ def bsonify(bson_data):
 
 from .views import account, projects
 
-app.register_blueprint(account.blueprint, url_prefix='/account')
-app.register_blueprint(projects.blueprint, url_prefix='/projects')
+app.register_blueprint(account.blueprint, url_prefix='/api/account')
+app.register_blueprint(projects.blueprint, url_prefix='/api/projects')
 
 # Set the lifetime of the session cookie
 #app.permanent_session_lifetime = timedelta(days=1)
