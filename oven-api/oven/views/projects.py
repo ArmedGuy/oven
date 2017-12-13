@@ -68,8 +68,8 @@ def get_project(id):
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
 
-@blueprint.route('/<id>/code/', methods=['GET'])
-def get_project_code(id):
+@blueprint.route('/<id>/code/<filename>', methods=['GET'])
+def get_project_code(id, filename):
 	project_id = ObjectId(id)
 	project = db.projects.find_one({'_id': project_id})
 	return project['code_file']

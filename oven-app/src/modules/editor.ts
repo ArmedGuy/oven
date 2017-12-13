@@ -100,6 +100,7 @@ export class Editor {
 
   deployProject(project: Project) {
     console.log("deploying");
+    this.api.saveProject(project);
     this.api.deployProject(project);
   }
 
