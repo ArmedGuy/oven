@@ -94,10 +94,6 @@ def save_project(id):
 			return jsonify({'response': 'Project not found'}), 404
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
-<<<<<<< HEAD
-			
-
-=======
 		
 @blueprint.route('/<id>/deploy', methods=['POST'])
 def deploy_project(id):
@@ -197,4 +193,3 @@ def deploy_project(id):
 	resp = requests.put("http://{}:4646/v1/job/{}".format(app.config['NOMAD_IP'], id), json=job)
 	print(resp.text)
 	return jsonify({"yay": "bla"})
->>>>>>> Nomad fixes

@@ -15,11 +15,4 @@ urllib3==1.22
 Werkzeug==0.12.2
 uwsgi==2.0.15
 lxml==4.1.1
-<<<<<<< HEAD
-coverage==4.1
-pytest==2.9.1
-pytest-cov==2.2.1
-mkdocs==0.15.3
-=======
->>>>>>> Nomad fixes
 pymongo==3.6.0
