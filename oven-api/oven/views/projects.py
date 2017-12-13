@@ -6,10 +6,7 @@ from oven import db, bsonify
 from datetime import datetime
 from bson.objectid import ObjectId
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
-<<<<<<< HEAD
-=======
 import requests
->>>>>>> Nomad fixes
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
 
