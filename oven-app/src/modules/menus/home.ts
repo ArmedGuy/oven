@@ -19,7 +19,7 @@ export class HomeMenu {
         let create = new CreateProjectPane(eventAggregator, router);
         this.availableActions.push(create);
 
-        let open = new OpenProjectPane();
+        let open = new OpenProjectPane(eventAggregator, router);
         this.availableActions.push(open);
 
         this.api = getApi();

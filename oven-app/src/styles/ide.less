@@ -1,5 +1,11 @@
 @import "_variables.less";
 
+* {
+    transition: all 0.2s;
+}
+.ide-editor, .ide_editor * {
+    transition: all 0s !important;
+}
 html, body, .ide-frame {
     background-color: @bg-primary;
     color: @text-primary;
@@ -21,7 +27,7 @@ input[type=text] {
     background-color: @bg-primary;
     color: @text-primary;
     min-width: 200px;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border: none;
 }
 
@@ -43,11 +49,22 @@ p {
     text-decoration: none;
     background-color: @color-status;
     border: none;
+    cursor: pointer;
     &:hover {
         background-color: darken(@color-status, 5%);
     }
     &:visited {
         color: @text-primary;
+    }
+
+    &.btn-small {
+        padding: 8px 16px;
+    }
+    &.btn-danger {
+        background-color: @color-danger;
+    }
+    &.btn-danger:hover {
+        background-color: darken(@color-danger, 5%);
     }
 }
 
@@ -64,7 +81,7 @@ p {
     padding-top: 30vh;
 
     .welcome {
-        width: 20vw;
+        max-width: 400px;;
         margin: auto;
         text-align: center;
         h1 {
@@ -80,7 +97,7 @@ p {
     }
     
 }
-.ide-container {
+.ide-container, .ide-row {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -91,9 +108,10 @@ p {
 
     &.column {
         flex-direction: column;
-        > * {
-            width: 100vw;
-        }
+    }
+
+    &.ide-full {
+        width: 100vw;
     }
 
     > * {
@@ -101,6 +119,10 @@ p {
         align-content: stretch;
         align-self: stretch;
         overflow: hidden;
+    }
+    .ide-col {
+        flex: 1;
+        margin: 4px;
     }
 }
 
@@ -299,7 +321,7 @@ p {
     }
 }
 
-.ide-new-project-wizard {
+.ide-new-project-wizard, .ide-open-project-wizard {
     .choice-list {
         .choice {
             background-color: @bg-primary;

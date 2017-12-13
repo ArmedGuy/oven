@@ -9,6 +9,20 @@ export class Python3FlaskSoftwareService implements SoftwareService {
         let url = url_data.replace(httpMethod, "");
         route.url = url;
     }
+    parseParams(url_data) : Array<string> {
+        let parts = url_data.split("/");
+        let params = new Array<string>();
+        parts.forEach(part => {
+            if(part.startsWith("<")) {
+                if(part.indexOf(":") != -1) {
+                    params.push(part.split(":")[1].replace(">", ""));
+                } else {
+                    params.push(part.replace("<", "").replace(">", ""));
+                }
+            }
+        });
+        return params;
+    }
     parseProject(project: Project) {
         let lines = project.code_file.split("\n");
         let buffer = new Array<string>();
@@ -56,6 +70,8 @@ export class Python3FlaskSoftwareService implements SoftwareService {
             code_file += "# oven:route:end_pre\n";
             code_file += "# oven:route:name=" + route.name + "\n";
             code_file += "# oven:route:url=" + route.httpMethod + route.url + "\n";
+            code_file += "@app.route(\"" + route.url + "\", methods=['" + route.httpMethod + "'])\n";
+            code_file += "def " + route.name + "(" + this.parseParams(route.url).join(", ") + "):\n";
             code_file += "# oven:route:start_code\n";
             route.content.split('\n').forEach(line => {
                 code_file += "    " + line + "\n";
@@ -65,7 +81,6 @@ export class Python3FlaskSoftwareService implements SoftwareService {
             // TODO: compile documentation
         });
         project.code_file = code_file;
-        console.log(code_file);
     }
     
 }

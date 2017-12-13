@@ -43,7 +43,7 @@ def verify():
 		else:
 			session['user_id'] = str(existing_email['_id'])
 		session['logged_in'] = True
-		return redirect("http://localhost:9000")
+		return redirect(app.config['FRONTEND_URL'])
 	else:
 		return redirect("/error") # TODO: actually return to some error page
 		

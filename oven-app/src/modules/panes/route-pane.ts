@@ -1,5 +1,6 @@
 import { EditorPane } from "./editor-pane";
 import { Route } from "../../oven/models";
+import { EventAggregator } from "aurelia-event-aggregator";
 
 declare var ace: any;
 
@@ -24,15 +25,17 @@ export class RoutePane implements EditorPane {
         return this.route.name;
     }
 
+    eventAggregator: EventAggregator;
+
     route: Route;
     language: string;
 
     example_data: Array<any>;
-    constructor(route: Route, language: string) {
+    constructor(route: Route, language: string, eventAggregator: EventAggregator) {
         this.route = route;
         this.template = "modules/panes/route-pane.html";
         this.language = language;
-
+        this.eventAggregator = eventAggregator;
     }
 
     attached() {
@@ -64,6 +67,9 @@ export class RoutePane implements EditorPane {
         this.main_editor.setShowPrintMargin(false);
         this.main_editor.getSession().setMode(`ace/mode/${this.language}`);
         this.main_editor.setValue(this.route.content, -1);
+        this.main_editor.getSession().on('change', (e) => {
+            this.route.content = this.main_editor.getValue();
+        });
         this.main_editor.setOption("minLines", 10);
         this.main_editor.setOption("maxLines", 40);
 
@@ -131,5 +137,9 @@ export class RoutePane implements EditorPane {
         this.route.url = url;
         this.route.httpMethod = method;
         this.route_editor.setValue(url, -1);
+    }
+
+    deleteRoute() {
+        this.eventAggregator.publish('delete route', this.route);
     }
 }

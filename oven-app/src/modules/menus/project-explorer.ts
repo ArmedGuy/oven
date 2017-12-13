@@ -26,8 +26,19 @@ export class ProjectExplorer {
         this.eventAggregator.subscribe('project loaded', (project: Project) => {
             this.project = project;
             project.routes.forEach((route: Route) => {
-                let rp = new RoutePane(route, 'python');
+                console.log(this.eventAggregator);
+                let rp = new RoutePane(route, 'python', this.eventAggregator);
                 this.projectPanes.push(rp);
+            });
+        });
+        this.eventAggregator.subscribe('delete route', (route) => {
+            this.projectPanes.forEach(pane => {
+                if(pane instanceof RoutePane) {
+                    if(pane.route == route) {
+                        let idx = this.projectPanes.indexOf(pane);
+                        this.projectPanes.splice(idx, 1);
+                    }
+                }
             });
         });
     }
@@ -54,7 +65,7 @@ export class ProjectExplorer {
             });
             r.name = name;
             this.project.routes.push(r);
-            let rp = new RoutePane(r, 'python');
+            let rp = new RoutePane(r, 'python', this.eventAggregator);
             this.projectPanes.push(rp);
             this.eventAggregator.publish('open pane', rp);
         }

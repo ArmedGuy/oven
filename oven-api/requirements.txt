@@ -19,3 +19,5 @@ coverage==4.1
 pytest==2.9.1
 pytest-cov==2.2.1
 mkdocs==0.15.3
+pymongo==3.6.0
+python-nomad==0.5.0

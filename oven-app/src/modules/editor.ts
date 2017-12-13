@@ -1,10 +1,11 @@
 import {EditorPane} from './panes/editor-pane';
 import {WelcomePane} from './panes/welcome';
-import { Project } from '../oven/models';
+import { Project, Route } from '../oven/models';
 import { OvenApi, getApi } from '../oven/oven-api';
 import { Router, RouterConfiguration } from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import { RoutePane } from './panes/route-pane';
 
 export class Editor {
   router: Router;
@@ -37,6 +38,11 @@ export class Editor {
 
   subscribe(): void {
     this.eventAggregator.subscribe('open project', id => {
+      this.openPanes.forEach(pane => {
+        if(pane instanceof RoutePane) {
+          this.closePane(pane);
+        }
+      })
       this.api.getProject(id).then((project) => {
         this.currentProject = project;
         this.eventAggregator.publish('project loaded', project);
@@ -53,6 +59,9 @@ export class Editor {
     });
     this.eventAggregator.subscribe('close pane', (pane) => {
       this.closePane(pane);
+    });
+    this.eventAggregator.subscribe('delete route', (route) => {
+      this.deleteRoute(route);
     });
   }
 
@@ -84,5 +93,19 @@ export class Editor {
   openProject(project: Project) {
     this.currentProject = project;
     this.router.navigateToRoute('project', { id: project._id });
+  }
+
+  deleteRoute(route: Route) {
+    if(confirm("Are you sure you want to delete " + route.name + "?")) {
+      this.openPanes.forEach(pane => {
+        if(pane instanceof RoutePane) {
+          if(pane.route == route) {
+            this.closePane(pane);
+          }
+        }
+      });
+      let idx = this.currentProject.routes.indexOf(route);
+      this.currentProject.routes.splice(idx, 1);
+    }
   }
 }

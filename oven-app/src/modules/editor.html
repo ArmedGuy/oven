@@ -1,14 +1,11 @@
 <template>
   <div class="ide-frame ide-container">
       <div class="ide-frame ide-container column">
-          <div class="ide-content ide-container">
+          <div class="ide-content ide-container ide-full">
               <div class="ide-menu icon-menu ide-panel ${editor.currentProject ? '' : 'primary'}">
                 <div if.bind="editor.currentProject" class="project-icons">
-                  <a class="icon-menu-link" href="#" title="Explorer">
+                  <a class="icon-menu-link active" href="#" title="Explorer">
                     <i class="fa fa-files-o" aria-hidden="true"></i>
-                  </a>
-                  <a class="icon-menu-link active" href="#" title="Deployment">
-                    <i class="fa fa-server" aria-hidden="true"></i>
                   </a>
                 </div>
                 <a class="icon-menu-link" href="#" title="Home">

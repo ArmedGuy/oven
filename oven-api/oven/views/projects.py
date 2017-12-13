@@ -1,13 +1,16 @@
 import os
 
-import pytest
 from oven import app
 from flask import Flask
 from oven import db, bsonify
 from datetime import datetime
 from bson.objectid import ObjectId
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
+<<<<<<< HEAD
 from oven.nomadapi import *
+=======
+from .nomadapi import get_job
+>>>>>>> Make lots of changes. Adding delete route and more
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
 
@@ -54,7 +57,7 @@ def get_projects():
 		
 		user_id = session['user_id']
 		
-		projects = db.projects.find({'user_id': user_id})
+		projects = db.projects.find({'user_id': ObjectId(user_id)})
 		return bsonify(projects)
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
@@ -87,7 +90,12 @@ def save_project(id):
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
 		
+<<<<<<< HEAD
 @blueprint.route('/<id>/deploy', methods=['GET'])
+=======
+
+@blueprint.route('/a', methods=['GET'])
+>>>>>>> Make lots of changes. Adding delete route and more
 def create_job():		
 	job = {"job" : {
 					  "ID":id,

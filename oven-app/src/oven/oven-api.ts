@@ -13,6 +13,7 @@ export function getApi() {
 export interface OvenApi {
     getRecentProjects(): Promise<Array<Project>>;
     getProject(id: string): Promise<Project>;
+    getProjects(): Promise<Array<Project>>;
     saveProject(project: Project);
     createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
     getAccount(): Promise<Account>;
@@ -38,11 +39,13 @@ export class WebOvenApi implements OvenApi {
                 });
         });
     }
+
     getRecentProjects(): Promise<Project[]> {
         return new Promise((resolve, reject) => {
             resolve([]);
         });
     }
+
     getProject(id: string): Promise<Project> {
         return new Promise<Project>((resolve, reject) => {
             this.client.fetch('projects/' + id, {
@@ -64,6 +67,29 @@ export class WebOvenApi implements OvenApi {
             }))
         });
         
+    }
+
+    getProjects(): Promise<Array<Project>> {
+        return new Promise<Array<Project>>((resolve, reject) => {
+            this.client.fetch('projects/', {
+                method: 'get'
+            }).then(response => response.json())
+            .then(projects => {
+                let newProjects = new Array<Project>();
+                projects.forEach(p => {
+                    let project = new Project;
+                    project._id = p._id["$oid"];
+                    project.user_id = p.user_id["$oid"];
+                    projectMappingFields.forEach(field => {
+                        project[field] = p[field];
+                    });
+                    newProjects.push(project);
+                });
+                return newProjects;
+            })
+            .then(projects => resolve(projects))
+            .catch(error => reject(error));
+        });
     }
 
     saveProject(project: Project) {
@@ -133,6 +159,12 @@ export class MockOvenApi implements OvenApi {
             getService(project.software_id).parseProject(project);
 
             resolve(MockOvenApi.projects.filter(x => x._id == id)[0]);
+        });
+    }
+
+    getProjects(): Promise<Array<Project>> {
+        return new Promise<Array<Project>>((resolve, reject) => {
+            resolve(MockOvenApi.projects);
         });
     }
 

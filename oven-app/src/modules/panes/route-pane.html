@@ -54,14 +54,14 @@
             </div>
         </div>
         <div class="ide-route-editor ide-panel" show.bind="route.url.length != 0">
-            <h2>Route settings</h2>
             <div>
-                <h4>HTTP Method</h4>
-                <label repeat.for="method of ['GET', 'POST', 'PUT', 'DELETE']">
-                    <input type="radio" name="method" value.bind="method" checked.bind="route.httpMethod" />
-                    ${method}
-                </label>
-                <div class="method-explanation">
+                <h4>Route Name</h4>
+                <input type="text" value.bind="route.name">
+                <input type="button" class="btn btn-danger btn-small" value="Delete route" click.trigger="deleteRoute()">
+            </div>
+            <div>
+                
+                <!--<div class="method-explanation">
                     <div show.bind="route.httpMethod == 'GET'">
                         <p>The GET method requests a representation of the specified resource. Requests using GET should only retrieve data and should have no other effect.</p>
                     </div>
@@ -75,10 +75,25 @@
                     <div show.bind="route.httpMethod == 'DELETE'">
                         <p>The DELETE method deletes the specified resource.</p>
                     </div>
+                </div>-->
+            </div>
+            <div class="ide-row">
+                <div class="ide-col">
+                    <div>
+                        <h4>URL Path</h4>
+                        <div class="ide-editor" id="route_editor"></div>
+                    </div>
+                </div>
+                <div class="ide-col">
+                    <div>
+                        <h4>HTTP Method</h4>
+                        <label repeat.for="method of ['GET', 'POST', 'PUT', 'DELETE']">
+                            <input type="radio" name="method" value.bind="method" checked.bind="route.httpMethod" />
+                            ${method}
+                        </label>
+                    </div>
                 </div>
             </div>
-            <h4>URL Path</h4>
-            <div class="ide-editor" id="route_editor"></div>
         </div>
         <div class="ide-editor" id="main_editor" show.bind="route.url.length != 0"></div>
     </div>
