@@ -6,6 +6,7 @@ class DevelopmentConfig:
 	SESSION_COOKIE_HTTPONLY = False
 	NOMAD_IP = '130.240.16.191'
 	NOMAD_PORT = 8301
+	APPLICATION_ROOT = "/api"
 	FRONTEND_URL = "http://localhost:9000/"
-	API_URL = "http://localhost:5555/"
+	API_URL = "http://localhost:5555/api/"
 	CAS_SERVICE = "http://localhost:5555/account/session/authenticate"
