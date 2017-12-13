@@ -3,12 +3,11 @@
         Explorer: ${editor.currentProject.name}
     </div>
     <ul class="ide-menu-list">
-        <li>
-            <span class="ide-pane-icon"><i class="fa fa-wrench"></i></span>
-            Settings
+        <li repeat.for="pane of projectPanes" click.trigger="editor.openPane(pane)">
+            <span class="ide-pane-icon" innerhtml.bind="pane.icon"></span> ${pane.displayName}
         </li>
         <li class="header">Routes</li>
-        <li repeat.for="pane of projectPanes" click.trigger="editor.openPane(pane)">
+        <li repeat.for="pane of routePanes" click.trigger="editor.openPane(pane)">
             <span class="ide-route-method" innerhtml.bind="pane.icon"></span>
             ${pane.displayName}
         </li>

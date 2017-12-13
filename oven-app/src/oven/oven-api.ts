@@ -18,6 +18,7 @@ export interface OvenApi {
     createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
     getAccount(): Promise<Account>;
     deployProject(project: Project);
+    getDeploymentStatus(project: Project) : Promise<any>;
 }
 let projectMappingFields = ["name",
                             "short_description",
@@ -111,6 +112,16 @@ export class WebOvenApi implements OvenApi {
         }).then(response => console.log(response));
     }
 
+    getDeploymentStatus(project: Project) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client.fetch("projects/" + project._id + "/deployment", {
+                method: 'get'
+            }).then(response => response.json())
+            .then(response => resolve(response))
+            .catch(error => reject(error));
+        });
+    }
+
     createProject(name: string, software_id: string, platform_id: string): Promise<Project> {
         let project = new Project();
         project.name = name;
@@ -181,6 +192,10 @@ export class MockOvenApi implements OvenApi {
 
     deployProject(project: Project) {
 
+    }
+
+    getDeploymentStatus(project: Project) : Promise<any> {
+        throw new Error("Not implemented");
     }
 
     createProject(name: string, software: string, platform: string) {

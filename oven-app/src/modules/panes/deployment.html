@@ -1,0 +1,12 @@
+<template>
+    <div class="ide-panel">
+            <h2>Deployment</h2>
+            <div if.bind="status">
+                <h3>Current status: ${status.StatusDescription}</h3>
+                <h5 if.bind="status.Status == 'running'"></h5>
+            </div>
+            <div if.bind="!status">
+                <h3>No deployment has been made.</h3>
+            </div>
+        </div>
+</template>

@@ -99,7 +99,7 @@ def deploy_project(id):
 	name = "{}-{}-{}".format(user['username'], project['name'], "bla")
 	task_name = "{}-{}".format(user['username'], project['name'])
 	url_prefix = "/oven/api/{}/{}".format(user['username'], project['name'])
-	artifact_url = "{}projects/{}/code/".format(app.config['API_URL'], id)
+	artifact_url = "{}projects/{}/code/app.py".format(app.config['API_URL'], id)
 	job = {
 		"job": {
 			"ID": id,
@@ -184,6 +184,19 @@ def deploy_project(id):
 		}
 	}
 	# register job with nomad			
-	resp = requests.put("http://{}:4646/v1/job/{}".format(app.config['NOMAD_IP'], id), json=job)
-	print(resp.text)
-	return jsonify({"yay": "bla"})
+	r = requests.put("http://{}:4646/v1/job/{}".format(app.config['NOMAD_IP'], id), json=job)
+	if(r.status_code == 200):
+		return jsonify({"response": "Successfully deployed"})
+	else:
+		return jsonify({"response": r.text})
+
+@blueprint.route("/<id>/deployment", methods=['GET'])
+def get_deployment(id):
+	if not session.get("logged_in"):
+		return jsonify({'response': 'Not logged in'}), 403
+	project_id = ObjectId(id)
+	r = requests.get("http://{}:4646/v1/job/{}/deployment".format(app.config['NOMAD_IP'], id))
+	if(r.status_code == 200):
+		return jsonify(r.json())
+	else:
+		return jsonify(None)
