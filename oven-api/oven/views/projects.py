@@ -99,7 +99,7 @@ def deploy_project(id):
 	name = "{}-{}-{}".format(user['username'], project['name'], "bla")
 	task_name = "{}-{}".format(user['username'], project['name'])
 	url_prefix = "/oven/api/{}/{}".format(user['username'], project['name'])
-	artifact_url = "{}/projects/{}/code/".format(app.config['API_URL'], id)
+	artifact_url = "{}projects/{}/code/".format(app.config['API_URL'], id)
 	job = {
 		"job": {
 			"ID": id,
