@@ -7,4 +7,5 @@ class DevelopmentConfig:
 	NOMAD_IP = '130.240.16.191'
 	NOMAD_PORT = 8301
 	FRONTEND_URL = "http://localhost:9000/"
+	API_URL = "http://localhost:5555/"
 	CAS_SERVICE = "http://localhost:5555/account/session/authenticate"

@@ -63,6 +63,9 @@ export class Editor {
     this.eventAggregator.subscribe('delete route', (route) => {
       this.deleteRoute(route);
     });
+    this.eventAggregator.subscribe('deploy project', (project) => {
+      this.deployProject(this.currentProject);
+    });
   }
 
   openPane(pane: EditorPane) {
@@ -93,6 +96,11 @@ export class Editor {
   openProject(project: Project) {
     this.currentProject = project;
     this.router.navigateToRoute('project', { id: project._id });
+  }
+
+  deployProject(project: Project) {
+    console.log("deploying");
+    this.api.deployProject(project);
   }
 
   deleteRoute(route: Route) {

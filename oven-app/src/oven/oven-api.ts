@@ -17,6 +17,7 @@ export interface OvenApi {
     saveProject(project: Project);
     createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
     getAccount(): Promise<Account>;
+    deployProject(project: Project);
 }
 let projectMappingFields = ["name",
                             "short_description",
@@ -104,6 +105,12 @@ export class WebOvenApi implements OvenApi {
         });
     }
 
+    deployProject(project: Project) {
+        this.client.fetch("projects/" + project._id + "/deploy", {
+            method: 'post'
+        }).then(response => console.log(response));
+    }
+
     createProject(name: string, software_id: string, platform_id: string): Promise<Project> {
         let project = new Project();
         project.name = name;
@@ -169,6 +176,10 @@ export class MockOvenApi implements OvenApi {
     }
 
     saveProject(project: Project) {
+
+    }
+
+    deployProject(project: Project) {
 
     }
 
