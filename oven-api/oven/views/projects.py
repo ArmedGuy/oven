@@ -6,7 +6,6 @@ from oven import db, bsonify
 from datetime import datetime
 from bson.objectid import ObjectId
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
-from oven.nomadapi import *
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
 
@@ -85,98 +84,5 @@ def save_project(id):
 			return jsonify({'response': 'Project not found'}), 404
 	else:
 		return jsonify({'response': 'Not logged in'}), 403
-		
-@blueprint.route('/<id>/deploy', methods=['GET'])
-def create_job():		
-	job = {"job" : {
-					  "ID":id,
-					  "Name":"test_name",
-					  "Type":"test_type",
-					  "Priority":50,
-					  "Datacenters":[
-						 "dh2"
-					  ],
-					  "TaskGroups":[
-						 {
-							"Name":"cache",
-							"Count":1,
-							"Tasks":[
-							   {
-								  "Name":"redis",
-								  "Driver":"docker",
-								  "User":"",
-								  "Config":{
-									 "image":"armedguy/oven-python3flask",
-									 "port_map":[
-										{
-										   "www":80
-										}
-									 ]
-								  },
-								  "Services":[
-									 {
-										"Id":"",
-										"Name":id,
-										"Tags":[
-										   "global",
-										   "cache"
-										],
-										"PortLabel":"www",
-										"AddressMode":"",
-										"Checks":[
-										   {
-											  "Id":"",
-											  "Name":"",
-											  "Type":"tcp",
-											  "Command":"",
-											  "Path":"",
-											  "Protocol":"",
-											  "PortLabel":"",
-											  "Interval":"",
-											  "Timeout":"",
-											  "InitialStatus":""
-										   }
-										]
-									 }
-								  ],
-								  "Resources":{
-									 "CPU":500,
-									 "MemoryMB":256,
-									 "Networks":[
-										{
-										   "IP":"",
-										   "MBits":10,
-										   "DynamicPorts":[
-											  {
-												 "Label":"www",
-												 "Value":0
-											  }
-										   ]
-										}
-									 ]
-								  }
-							   }
-							],
-							"RestartPolicy":{
-							   "Interval":"",
-							   "Attempts":"",
-							   "Delay":"",
-							   "Mode":""
-							},
-							"EphemeralDisk":{
-							   "SizeMB":300
-							}
-						 }
-					  ],
-					  "Update":{
-						 "MaxParallel":1,
-						 "MinHealthyTime":10000000000,
-						 "HealthyDeadline":180000000000,
-						 "Canary":0
-					  }
-				   }
-				}
-				
-	return register_job(job)
-	
+			
 
