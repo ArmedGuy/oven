@@ -73,8 +73,5 @@ export class DeploymentPane implements EditorPane {
         console.log(this.api);
         console.log(this.project);
         this.api.deployProject(this.project);
-        this.api.saveProject(this.project).then(() => {   
-            
-        });
     }
 }
