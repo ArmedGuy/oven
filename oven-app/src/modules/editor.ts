@@ -26,7 +26,7 @@ export class Editor {
     
     let saveProject = () => {
         this.eventAggregator.publish('save project');
-        setTimeout(saveProject, 15000);
+        setTimeout(saveProject, 5000);
     };
     saveProject();
     this.subscribe();

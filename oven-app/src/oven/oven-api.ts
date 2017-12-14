@@ -96,7 +96,6 @@ export class WebOvenApi implements OvenApi {
     }
 
     public saveProject(project: Project) : Promise<any> {
-        if(!project._dirty) return;
         return new Promise((resolve, reject) => {
             getService(project.software_id).compileProject(project);
             let sendProject = {};
