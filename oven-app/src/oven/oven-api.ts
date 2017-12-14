@@ -19,6 +19,7 @@ export interface OvenApi {
     getAccount(): Promise<Account>;
     deployProject(project: Project);
     getDeploymentStatus(project: Project) : Promise<any>;
+    getDeploymentAllocations(project: Project) : Promise<any>;
 }
 let projectMappingFields = ["name",
                             "short_description",
@@ -95,16 +96,18 @@ export class WebOvenApi implements OvenApi {
     }
 
     saveProject(project: Project) : Promise<any> {
+        if(!project._dirty) return;
         return new Promise((resolve, reject) => {
             getService(project.software_id).compileProject(project);
             let sendProject = {};
             projectMappingFields.forEach(field => {
                 sendProject[field] = project[field];
             });
+            project._dirty = false;
             this.client.fetch("projects/" + project._id, {
                 method: 'put',
                 body: json(sendProject)
-            }).then(response => resolve(response))
+            }).then(response => resolve())
             .catch(error => reject(error));
         });
         
@@ -119,6 +122,16 @@ export class WebOvenApi implements OvenApi {
     getDeploymentStatus(project: Project) : Promise<any> {
         return new Promise((resolve, reject) => {
             this.client.fetch("projects/" + project._id + "/deployment", {
+                method: 'get'
+            }).then(response => response.json())
+            .then(response => resolve(response))
+            .catch(error => reject(error));
+        });
+    }
+
+    getDeploymentAllocations(project: Project) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client.fetch("projects/" + project._id + "/deployment/alloc", {
                 method: 'get'
             }).then(response => response.json())
             .then(response => resolve(response))
@@ -199,6 +212,10 @@ export class MockOvenApi implements OvenApi {
     }
 
     getDeploymentStatus(project: Project) : Promise<any> {
+        throw new Error("Not implemented");
+    }
+
+    getDeploymentAllocations(project: Project) : Promise<any> {
         throw new Error("Not implemented");
     }
 

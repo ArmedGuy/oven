@@ -65,7 +65,7 @@ export class Python3FlaskSoftwareService implements SoftwareService {
         let code_file = "";
         project.routes.forEach((route) => {
             code_file += "from flask import Flask\napp = Flask(__name__)\n"
-            code_file += "@app.route('/', methods=['GET'])\ndef index():\n"
+            code_file += "@app.route('/', methods=['GET'])\ndef index():\n  return '',200\n"
             code_file += "# oven:route:start\n";
             code_file += "# oven:route:start_pre\n";
             code_file += route.prepend_content + "\n";

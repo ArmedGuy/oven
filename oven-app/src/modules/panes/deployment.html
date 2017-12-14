@@ -15,6 +15,20 @@
                     <h2>${status.JobVersion}<br><small>Deployment version</small></h2>
                 </div>
             </div>
+            <h3>Allocations</h3>
+            <table class="table table-striped">
+                <tr repeat.for="alloc of allocations">
+                    <td>${alloc.version}</td>
+                    <td>${alloc.name}</td>
+                    <td>${alloc.desired}</td>
+                    <td>${alloc.status}</td>
+                </tr>
+            </table>
+            <h3>Logs</h3>
+            <pre>
+            <span repeat.for="event in events">${event.type.padEnd(30)} ${event.message}
+            </span>
+            </pre>
         </div>
         <div if.bind="!status">
             <h3>No deployment has been made.</h3>
