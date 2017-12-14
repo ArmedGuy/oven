@@ -1,5 +1,5 @@
 import { EditorPane } from "./editor-pane";
-import { Route } from "../../oven/models";
+import { Route, Project } from "../../oven/models";
 import { EventAggregator } from "aurelia-event-aggregator";
 
 declare var ace: any;
@@ -27,11 +27,13 @@ export class RoutePane implements EditorPane {
 
     eventAggregator: EventAggregator;
 
+    project: Project;
     route: Route;
     language: string;
 
     example_data: Array<any>;
-    constructor(route: Route, language: string, eventAggregator: EventAggregator) {
+    constructor(project: Project, route: Route, language: string, eventAggregator: EventAggregator) {
+        this.project = project;
         this.route = route;
         this.template = "modules/panes/route-pane.html";
         this.language = language;
@@ -57,6 +59,7 @@ export class RoutePane implements EditorPane {
         this.route_editor.setValue(this.route.url, -1);
         this.route_editor.setOption("maxLines", 1);
         this.route_editor.getSession().on('change', (e) => {
+            this.project._dirty = true;
             this.route.url = this.route_editor.getValue();
         });
         this.route_editor.renderer.setShowGutter(false);
@@ -68,6 +71,7 @@ export class RoutePane implements EditorPane {
         this.main_editor.getSession().setMode(`ace/mode/${this.language}`);
         this.main_editor.setValue(this.route.content, -1);
         this.main_editor.getSession().on('change', (e) => {
+            this.project._dirty = true;
             this.route.content = this.main_editor.getValue();
         });
         this.main_editor.setOption("minLines", 10);

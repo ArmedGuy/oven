@@ -203,8 +203,8 @@ export class MockOvenApi implements OvenApi {
         });
     }
 
-    saveProject(project: Project) {
-
+    saveProject(project: Project) : Promise<any> {
+        throw new Error("Not implemented");
     }
 
     deployProject(project: Project) {

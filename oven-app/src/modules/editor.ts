@@ -106,6 +106,7 @@ export class Editor {
       });
       let idx = this.currentProject.routes.indexOf(route);
       this.currentProject.routes.splice(idx, 1);
+      this.currentProject._dirty = true;
     }
   }
 }

@@ -30,7 +30,7 @@ export class ProjectExplorer {
             this.project = project;
             project.routes.forEach((route: Route) => {
                 console.log(this.eventAggregator);
-                let rp = new RoutePane(route, 'python', this.eventAggregator);
+                let rp = new RoutePane(this.project, route, 'python', this.eventAggregator);
                 this.routePanes.push(rp);
             });
 
@@ -71,8 +71,9 @@ export class ProjectExplorer {
             });
             r.name = name;
             this.project.routes.push(r);
-            let rp = new RoutePane(r, 'python', this.eventAggregator);
+            let rp = new RoutePane(this.project, r, 'python', this.eventAggregator);
             this.routePanes.push(rp);
+            this.project._dirty = true;
             this.eventAggregator.publish('open pane', rp);
         }
     }

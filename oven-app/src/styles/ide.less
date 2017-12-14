@@ -31,7 +31,15 @@ input[type=text] {
     border: none;
 }
 
-
+table.table {
+    font-weight: 400;
+    display: block;
+    &.table-striped {
+        tr:nth-child(even) {
+            background-color: @bg-secondary;
+        }
+    }
+}
 h1, h2, h3, h4, h5, h6, p, span {
     color: @text-primary;
 }
