@@ -1,8 +1,8 @@
 @import "_variables.less";
 
-* {
+/** {
     transition: all 0.2s;
-}
+}*/
 .ide-editor, .ide_editor * {
     transition: all 0s !important;
 }
@@ -272,6 +272,7 @@ p {
 
 .ide-pane-frame {
     background-color: @bg-editor;
+    overflow: auto;
 }
 .ide-pane-icon, .ide-tab-close {
     min-width: 16px;

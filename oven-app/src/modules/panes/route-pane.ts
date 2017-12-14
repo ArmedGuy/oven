@@ -75,7 +75,6 @@ export class RoutePane implements EditorPane {
             this.route.content = this.main_editor.getValue();
         });
         this.main_editor.setOption("minLines", 10);
-        this.main_editor.setOption("maxLines", 40);
 
 
         // Setup example stuff
