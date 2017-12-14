@@ -95,7 +95,7 @@ def deploy_project(id):
 		return jsonify({'response': 'Not logged in'}), 403
 
 	# Stop old version
-	requests.delete("http://{}:4646/v1/job/{}".format(app.config['NOMAD_IP'], id), json=job)
+	requests.delete("http://{}:4646/v1/job/{}".format(app.config['NOMAD_IP'], id))
 
 	user_id = ObjectId(session['user_id'])
 	user = db.users.find_one({'_id': user_id})

@@ -4,7 +4,7 @@
           <div class="ide-content ide-container ide-full">
               <div class="ide-menu icon-menu ide-panel ${editor.currentProject ? '' : 'primary'}">
                 <div if.bind="editor.currentProject" class="project-icons">
-                  <a class="icon-menu-link active" href="#" title="Explorer">
+                  <a class="icon-menu-link active" href="#/projects/${editor.currentProject._id}" title="Explorer">
                     <i class="fa fa-files-o" aria-hidden="true"></i>
                   </a>
                 </div>
