@@ -20,12 +20,15 @@ export class DeploymentPane implements EditorPane {
     allocations: Array<any>;
     events: Array<any>;
 
+    deploying: boolean;
+
     constructor(project: Project) {
         this.template = "modules/panes/deployment.html";
         this.project = project;
         this.allocations = new Array<any>();
         this.events = new Array<any>();
         this.api = getApi();
+        this.deploying = false;
         this.fetchDeploymentInfo();
     }
 
@@ -70,8 +73,10 @@ export class DeploymentPane implements EditorPane {
     }
 
     deployProject() {
-        console.log(this.api);
-        console.log(this.project);
         this.api.deployProject(this.project);
+        this.deploying = true;
+        setTimeout(() => {
+            this.deploying = false;
+        }, 10000);
     }
 }

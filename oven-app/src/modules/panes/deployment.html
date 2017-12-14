@@ -4,7 +4,7 @@
         <div if.bind="status">
             <h3>Current status: ${status.StatusDescription}</h3>
             <h5 if.bind="status.Status == 'successful'">
-                Available at: <code>http://svchost.ludd.ltu.se/oven/${account.username}/${project.name}</code>
+                Available at: <code>http://svchost.ludd.ltu.se/oven/api/${account.username}/${project.name}</code>
             </h5>
             <div class="ide-row">
                 <div class="ide-col">
@@ -40,8 +40,11 @@
             <h3>No deployment has been made.</h3>
         </div>
 
-        <div class="deploy-button">
+        <div class="deploy-button" show.if="!deploying">
             <input type="button" class="btn btn-block" click.trigger="deployProject()" value="Deploy">
+        </div>
+        <div show.if="deploying">
+            <h4>Deployment scheduled...</h4>
         </div>
     </div>
 </template>
