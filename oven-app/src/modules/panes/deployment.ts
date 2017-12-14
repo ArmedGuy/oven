@@ -1,6 +1,7 @@
 import { EditorPane } from "./editor-pane";
 import { Project } from "../../oven/models";
 import { getApi, OvenApi } from "../../oven/oven-api";
+import { EventAggregator } from "aurelia-event-aggregator";
 
 export class DeploymentPane implements EditorPane {
     name: string;
@@ -27,6 +28,12 @@ export class DeploymentPane implements EditorPane {
         this.api.getDeploymentStatus(this.project).then((status) => {
             this.status = status;
         });
-        setTimeout(this.fetchDeploymentInfo, 5000);
+        setTimeout(this.fetchDeploymentInfo.bind(this), 5000);
+    }
+
+    deployProject() {
+        this.api.saveProject(this.project).then(() => {   
+            this.api.deployProject(this.project);
+        })
     }
 }

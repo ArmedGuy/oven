@@ -94,16 +94,20 @@ export class WebOvenApi implements OvenApi {
         });
     }
 
-    saveProject(project: Project) {
-        getService(project.software_id).compileProject(project);
-        let sendProject = {};
-        projectMappingFields.forEach(field => {
-            sendProject[field] = project[field];
+    saveProject(project: Project) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            getService(project.software_id).compileProject(project);
+            let sendProject = {};
+            projectMappingFields.forEach(field => {
+                sendProject[field] = project[field];
+            });
+            this.client.fetch("projects/" + project._id, {
+                method: 'put',
+                body: json(sendProject)
+            }).then(response => resolve(response))
+            .catch(error => reject(error));
         });
-        this.client.fetch("projects/" + project._id, {
-            method: 'put',
-            body: json(sendProject)
-        });
+        
     }
 
     deployProject(project: Project) {

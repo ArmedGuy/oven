@@ -76,9 +76,4 @@ export class ProjectExplorer {
             this.eventAggregator.publish('open pane', rp);
         }
     }
-
-    deployProject() {
-        console.log("push to deploy");
-        this.eventAggregator.publish('deploy project', this.project);
-    }
 }
