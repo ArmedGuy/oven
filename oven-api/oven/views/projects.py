@@ -200,3 +200,14 @@ def get_deployment(id):
 		return jsonify(r.json())
 	else:
 		return jsonify(None)
+
+@blueprint.route("/<id>/deployment/alloc", methods=['GET'])
+def get_deployment_allocs(id):
+	if not session.get("logged_in"):
+		return jsonify({'response': 'Not logged in'}), 403
+	project_id = ObjectId(id)
+	r = requests.get("http://{}:4646/v1/job/{}/allocations".format(app.config['NOMAD_IP'], id))
+	if(r.status_code == 200):
+		return jsonify(r.json())
+	else:
+		return jsonify(None)
