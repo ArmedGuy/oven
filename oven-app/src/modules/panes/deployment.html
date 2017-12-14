@@ -25,10 +25,14 @@
                 </tr>
             </table>
             <h3>Logs</h3>
-            <pre>
-            <span repeat.for="event of events">${event.type.padEnd(30)} ${event.message}
-            </span>
-            </pre>
+            <table class="table table-striped">
+                <tr repeat.for="event of events">
+                    <td>${event.datetime.toLocaleString()}</td>
+                    <td>${event.version}</td>
+                    <td>${event.type}</td>
+                    <td>${event.message}</td>
+                </tr>
+            </table>
         </div>
         <div if.bind="!status">
             <h3>No deployment has been made.</h3>

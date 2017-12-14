@@ -7,6 +7,7 @@ export class DeploymentPane implements EditorPane {
     name: string;
     template: string;
     api: OvenApi;
+
     get icon(): string {
         return "<i class='fa fa-server icon-blue'></i>";
     }
@@ -32,7 +33,7 @@ export class DeploymentPane implements EditorPane {
         let messages = ["DownloadError", "DriverError", "DriverMessage", "KillError", "KillReason", "Message", "RestartReason", "SetupError", "ValidationError"];
         let message = "";
         messages.forEach(msg => {
-            messages += event[msg];
+            message += event[msg];
         });
         return message;
     }
@@ -42,6 +43,7 @@ export class DeploymentPane implements EditorPane {
         });
         this.api.getDeploymentAllocations(this.project).then((allocations) => {
             this.allocations = new Array<any>();
+            this.events = new Array<any>();
             allocations.forEach(alloc => {
                 this.allocations.push({
                     name: alloc["Name"],
@@ -50,10 +52,11 @@ export class DeploymentPane implements EditorPane {
                     status: alloc["ClientStatus"]
                 });
                 let states = alloc['TaskStates'];
-                states[states.keys()[0]]['Events'].forEach(event => {
+                states[Object.keys(states)[0]]['Events'].forEach(event => {
                     this.events.push({
                         type: event['Type'],
                         time: event['Time'],
+                        datetime: new Date(event['Time']/1000000),
                         version: alloc["JobVersion"],
                         message: this.getEventMessage(event)
                     });
@@ -67,8 +70,11 @@ export class DeploymentPane implements EditorPane {
     }
 
     deployProject() {
+        console.log(this.api);
+        console.log(this.project);
+        this.api.deployProject(this.project);
         this.api.saveProject(this.project).then(() => {   
-            this.api.deployProject(this.project);
-        })
+            
+        });
     }
 }

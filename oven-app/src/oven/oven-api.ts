@@ -14,7 +14,7 @@ export interface OvenApi {
     getRecentProjects(): Promise<Array<Project>>;
     getProject(id: string): Promise<Project>;
     getProjects(): Promise<Array<Project>>;
-    saveProject(project: Project);
+    saveProject(project: Project) : Promise<any>;
     createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
     getAccount(): Promise<Account>;
     deployProject(project: Project);
@@ -95,7 +95,7 @@ export class WebOvenApi implements OvenApi {
         });
     }
 
-    saveProject(project: Project) : Promise<any> {
+    public saveProject(project: Project) : Promise<any> {
         if(!project._dirty) return;
         return new Promise((resolve, reject) => {
             getService(project.software_id).compileProject(project);
