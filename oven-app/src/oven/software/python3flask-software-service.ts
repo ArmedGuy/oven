@@ -63,9 +63,9 @@ export class Python3FlaskSoftwareService implements SoftwareService {
     }
     compileProject(project: Project) {
         let code_file = "";
+        code_file += "from flask import Flask\napp = Flask(__name__)\n"
+        code_file += "@app.route('/', methods=['GET'])\ndef index():\n  return '',200\n"
         project.routes.forEach((route) => {
-            code_file += "from flask import Flask\napp = Flask(__name__)\n"
-            code_file += "@app.route('/', methods=['GET'])\ndef index():\n  return '',200\n"
             code_file += "# oven:route:start\n";
             code_file += "# oven:route:start_pre\n";
             code_file += route.prepend_content + "\n";
@@ -81,9 +81,10 @@ export class Python3FlaskSoftwareService implements SoftwareService {
             code_file += "# oven:route:end_code\n";
             code_file += "# oven:route:end\n";
 
-            code_file += "if __name__ == '__main__':\n  app.run('0.0.0.0', 80)"
+            
             // TODO: compile documentation
         });
+        code_file += "if __name__ == '__main__':\n  app.run('0.0.0.0', 80)"
         project.code_file = code_file;
     }
     
