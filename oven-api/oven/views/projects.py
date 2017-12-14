@@ -93,6 +93,10 @@ def save_project(id):
 def deploy_project(id):
 	if not session.get("logged_in"):
 		return jsonify({'response': 'Not logged in'}), 403
+
+	# Stop old version
+	requests.delete("http://{}:4646/v1/job/{}".format(app.config['NOMAD_IP'], id), json=job)
+
 	user_id = ObjectId(session['user_id'])
 	user = db.users.find_one({'_id': user_id})
 	project = db.projects.find_one({'_id': ObjectId(id), 'user_id': user_id})

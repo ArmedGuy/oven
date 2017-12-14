@@ -3,7 +3,9 @@
         <h2>Deployment</h2>
         <div if.bind="status">
             <h3>Current status: ${status.StatusDescription}</h3>
-            <h5 if.bind="status.Status == 'running'"></h5>
+            <h5 if.bind="status.Status == 'successful'">
+                Available at: <code>http://svchost.ludd.ltu.se/oven/${account.username}/${project.name}</code>
+            </h5>
             <div class="ide-row">
                 <div class="ide-col">
                     <h2>${status.TaskGroups['www'].HealthyAllocs}<br><small>Healty allocations</small></h2>
