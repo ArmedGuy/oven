@@ -14,6 +14,7 @@ export class CreateProjectPane implements EditorPane{
 
     api: OvenApi;
     
+    error: any;
 
     constructor(eventAggregator: EventAggregator, router: Router) {
         this.name = "New microservice";
@@ -45,10 +46,17 @@ export class CreateProjectPane implements EditorPane{
     }
 
     createProject() {
+        if(this.platform == "heroku") {
+            this.platform = "nomad";
+            // TODO: fix
+        }
         this.api.createProject(this.projectName, this.software, this.platform).then((project) => {
             this.eventAggregator.publish('close pane', this);
             this.router.navigateToRoute("project", { id: project._id });
             this.eventAggregator.publish('open pane', new NewProjectPane);
+        }).catch((error) => {
+            console.log("error", error);
+            this.error = error;
         });
     }
     

@@ -7,6 +7,9 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from flask import url_for, Blueprint, render_template, request, session, redirect, jsonify, g
 import requests
+import re
+
+PROJECT_NAME_REGEX = re.compile("^[a-z0-9-]+$")
 
 blueprint = Blueprint('projects', __name__, template_folder='templates')
 
@@ -16,6 +19,8 @@ def create():
 	if session.get('logged_in'):
 		data = request.get_json()
 		name = data['name']
+		if not PROJECT_NAME_REGEX.match(name):
+			return jsonify({'response': 'Invalid name'}), 400
 		software_id = data['software_id']
 		platform_id = data['platform_id']
 		# Get the current time
@@ -78,6 +83,8 @@ def get_project_code(id, filename):
 def save_project(id):
 	if session.get('logged_in'):
 		user_id = session['user_id']
+		if not PROJECT_NAME_REGEX.match(name):
+			return jsonify({'response': 'Invalid name'}), 400
 		project = db.projects.find_one_and_update(
 			{'user_id': ObjectId(user_id), '_id': ObjectId(id)},
 			{'$set': request.get_json()},
@@ -100,7 +107,7 @@ def deploy_project(id):
 	user_id = ObjectId(session['user_id'])
 	user = db.users.find_one({'_id': user_id})
 	project = db.projects.find_one({'_id': ObjectId(id), 'user_id': user_id})
-	name = "{}-{}-{}".format(user['username'], project['name'], "bla")
+	name = "{}-{}-{}".format(user['username'], project['name'], "oven-microservice")
 	task_name = "{}-{}".format(user['username'], project['name'])
 	url_prefix = "/oven/api/{}/{}".format(user['username'], project['name'])
 	artifact_url = "{}projects/{}/code/app.py".format(app.config['API_URL'], id)

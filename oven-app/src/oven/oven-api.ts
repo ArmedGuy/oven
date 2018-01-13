@@ -30,6 +30,15 @@ let projectMappingFields = ["name",
                             "revision",
                             "documentation"];
 
+let rejectNon200 = function(resp : any) {
+    let json = resp.json(); // there's always a body
+    if (resp.status >= 200 && resp.status < 300) {
+      return json;
+    } else {
+      return json.then(Promise.reject.bind(Promise));
+    }
+};
+
 export class WebOvenApi implements OvenApi {
     client: HttpClient;
     constructor() {
@@ -53,7 +62,7 @@ export class WebOvenApi implements OvenApi {
         return new Promise<Project>((resolve, reject) => {
             this.client.fetch('projects/' + id, {
                 method: 'get'
-            }).then(response => response.json())
+            }).then(rejectNon200)
             .then(response => {
                 let p = new Project;
                 p._id = response._id["$oid"];
@@ -62,12 +71,8 @@ export class WebOvenApi implements OvenApi {
                     p[field] = response[field];
                 });
                 getService(p.software_id).parseProject(p);
-                return p;
-            })
-            .then(project => resolve(project))
-            .catch((error => {
-                reject(error);
-            }))
+                resolve(p);
+            }, error => reject(error));
         });
         
     }
@@ -76,7 +81,7 @@ export class WebOvenApi implements OvenApi {
         return new Promise<Array<Project>>((resolve, reject) => {
             this.client.fetch('projects/', {
                 method: 'get'
-            }).then(response => response.json())
+            }).then(rejectNon200)
             .then(projects => {
                 let newProjects = new Array<Project>();
                 projects.forEach(p => {
@@ -88,10 +93,8 @@ export class WebOvenApi implements OvenApi {
                     });
                     newProjects.push(project);
                 });
-                return newProjects;
-            })
-            .then(projects => resolve(projects))
-            .catch(error => reject(error));
+                resolve(newProjects);
+            }, error => reject(error));
         });
     }
 
@@ -120,11 +123,11 @@ export class WebOvenApi implements OvenApi {
 
     getDeploymentStatus(project: Project) : Promise<any> {
         return new Promise((resolve, reject) => {
-            this.client.fetch("projects/" + project._id + "/deployment", {
+            var promise = this.client.fetch("projects/" + project._id + "/deployment", {
                 method: 'get'
-            }).then(response => response.json())
-            .then(response => resolve(response))
-            .catch(error => reject(error));
+            }).then(response => response.json());
+            promise.catch(error => reject(error));
+            promise.then(response => resolve(response));
         });
     }
 
@@ -147,7 +150,7 @@ export class WebOvenApi implements OvenApi {
                 this.client.fetch("projects/", {
                     method: 'post',
                     body: json(project)
-                }).then(response => response.json())
+                }).then(rejectNon200)
                 .then(response => {
                     project._id = response._id["$oid"];
                     project.user_id = response.user_id["$oid"];
@@ -155,10 +158,8 @@ export class WebOvenApi implements OvenApi {
                         project[field] = response[field];
                     });
                     getService(project.software_id).parseProject(project);
-                    return project;
-                })
-                .then(project => resolve(project))
-                .catch(error => reject(error));
+                    resolve(project);
+                }, error => reject(error));
         });
     }
     getAccount(): Promise<Account> {
