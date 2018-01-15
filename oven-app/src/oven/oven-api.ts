@@ -26,10 +26,10 @@ export interface OvenApi {
 }
 let projectMappingFields = ["name",
                             "short_description",
+                            "description",
                             "software_id",
                             "platform_id",
                             "code_file",
-                            "dependencies",
                             "revision",
                             "documentation",
                             "environment_id"];

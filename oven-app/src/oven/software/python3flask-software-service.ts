@@ -63,6 +63,7 @@ export class Python3FlaskSoftwareService implements SoftwareService {
     }
     compileProject(project: Project) {
         let code_file = "";
+        let documentation = "## Routes\n";
         code_file += "from flask import Flask\napp = Flask(__name__)\n"
         code_file += "@app.route('/', methods=['GET'])\ndef index():\n  return '',200\n"
         project.routes.forEach((route) => {
@@ -70,21 +71,41 @@ export class Python3FlaskSoftwareService implements SoftwareService {
             code_file += "# oven:route:start_pre\n";
             code_file += route.prepend_content + "\n";
             code_file += "# oven:route:end_pre\n";
+
+
+            documentation += "### **" + route.httpMethod + "** `" + route.url + "`" + "\n";
             code_file += "# oven:route:name=" + route.name + "\n";
             code_file += "# oven:route:url=" + route.httpMethod + route.url + "\n";
             code_file += "@app.route(\"" + route.url + "\", methods=['" + route.httpMethod + "'])\n";
             code_file += "def " + route.name + "(" + this.parseParams(route.url).join(", ") + "):\n";
             code_file += "# oven:route:start_code\n";
+
+            let inDocs = false;
+            let skipInDocs = false;
             route.content.split('\n').forEach(line => {
+                if(line.startsWith("\"\"\"BEGIN DOCS")) {
+                    inDocs = true;
+                    skipInDocs = true;
+                }
+                if(line.startsWith("END DOCS\"\"\"")) {
+                    inDocs = false;
+                    skipInDocs = true;
+                }
+                if(inDocs && !skipInDocs) {
+                    documentation += line + "\n";
+                }
+                skipInDocs = false;
                 code_file += "    " + line + "\n";
             });
             code_file += "# oven:route:end_code\n";
             code_file += "# oven:route:end\n";
 
+            documentation += "<hr>\n";
             
             // TODO: compile documentation
         });
-        code_file += "if __name__ == '__main__':\n  app.run('0.0.0.0', 80)"
+        code_file += "if __name__ == '__main__':\n  app.run('0.0.0.0', 80)";
+        project.documentation = documentation;
         project.code_file = code_file;
     }
     

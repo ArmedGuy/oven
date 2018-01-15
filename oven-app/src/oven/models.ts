@@ -15,12 +15,12 @@ export class Route {
 export class Project {
     _id: any;
     name: string;
+    description : string;
     short_description: string;
     user_id: string;
     software_id: string;
     platform_id: string;
     code_file: string;
-    dependencies: string;
     revision: number;
     documentation: string;
     environment_id: any;

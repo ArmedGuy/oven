@@ -7,6 +7,7 @@ import { RoutePane } from '../panes/route-pane';
 import {activationStrategy} from 'aurelia-router';
 import { DeploymentPane } from '../panes/deployment';
 import { ProjectSettingsPane } from '../panes/project-settings';
+import { DocumentationPane } from '../panes/project-documentation';
 
 @autoinject
 export class ProjectExplorer {
@@ -37,6 +38,7 @@ export class ProjectExplorer {
 
             this.projectPanes.push(new ProjectSettingsPane(this.project, this.eventAggregator));
             this.projectPanes.push(new DeploymentPane(this.project));
+            this.projectPanes.push(new DocumentationPane(this.project));
 
         });
         this.eventAggregator.subscribe('delete route', (route) => {

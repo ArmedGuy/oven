@@ -43,7 +43,8 @@
           "node_modules/ace-builds/src-min/ace.js",
           "node_modules/ace-builds/src-min/mode-python.js",
           "node_modules/ace-builds/src-min/theme-chaos.js",
-          "prebuilt/url-mode.js"
+          "prebuilt/url-mode.js",
+          "node_modules/showdown/dist/showdown.js"
         ],
         "dependencies": [
           "aurelia-binding",

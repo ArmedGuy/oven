@@ -1,7 +1,7 @@
 <template>
-    <div class="ide-panel">
-        <div class="ide-panel ide-light-panel">
-            <h2>Settings</h2>
+    <div class="ide-panel-large">
+        <div class="">
+            <h1>Settings</h1>
             <div class="ide-settings">
                 <h3>Project name</h3>
                 <input type="text" value.bind="project.name">
@@ -20,7 +20,8 @@
             <button class="btn" click.trigger="saveProject()">Save project</button>
             <button class="btn btn-danger" click.trigger="deleteProject()">Delete project</button>
         </div>
-        <div class="ide-panel ide-light-panel">
+        <hr>
+        <div class="">
             <h2>Upload environment</h2>
             <span if.bind="project.environment_id"><b>An environment has been set for this project</b></span>
             <p>You can upload a .zip file containing extra files that are needed by your microservice, such as a requirements.txt-file. All files will be placed in the same directory as the microservice.

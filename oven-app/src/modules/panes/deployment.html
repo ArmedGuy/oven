@@ -1,7 +1,7 @@
 <template>
-    <div class="ide-panel">
-        <div class="ide-panel ide-light-panel">
-            <h2>Deployment</h2>
+    <div class="ide-panel-large">
+        <div class="">
+            <h1>Deployment</h1>
             <div if.bind="status">
                 <h3>Current status: ${status.StatusDescription}</h3>
                 <h4 if.bind="status.Status == 'successful'">
@@ -33,7 +33,7 @@
                 <h4>Deployment scheduled...</h4>
             </div>
         </div>
-        <div class="ide-panel">
+        <div>
             <div if.bind="status">
                 <h3>Allocations</h3>
                 <table class="table table-striped">

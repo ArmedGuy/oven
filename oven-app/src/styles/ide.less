@@ -31,7 +31,8 @@ input[type=text], textarea {
     border: none;
 }
 textarea {
-    min-width: 450px;
+    min-width: 550px;
+    min-height: 300px;
 }
 
 table.table {
@@ -159,6 +160,9 @@ hr {
 
 .ide-panel {
     padding: 14px;
+}
+.ide-panel-large {
+    padding: 24px;
 }
 
 .ide-content {
@@ -432,6 +436,17 @@ hr {
     order: 0;
     flex: 0 0 auto;
     height: 200px;
+}
+
+.ide-documentation {
+
+    p {
+        font-size: 13px;
+    }
+    h3 {
+        background-color: @bg-secondary;
+        padding: 12px 8px;
+    }
 }
 
 .ide-status {
