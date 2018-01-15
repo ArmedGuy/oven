@@ -1,4 +1,6 @@
 #!/bin/bash
+sudo systemctl start mongod
+
 cd /vagrant/oven-app
 au run --watch &
 
