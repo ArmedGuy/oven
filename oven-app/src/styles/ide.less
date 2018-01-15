@@ -23,12 +23,15 @@ input[type=button], input[type=submit], button {
     color: white;
 }
 
-input[type=text] {
+input[type=text], textarea {
     background-color: @bg-primary;
     color: @text-primary;
     min-width: 200px;
     padding: 8px 16px;
     border: none;
+}
+textarea {
+    min-width: 450px;
 }
 
 table.table {
@@ -39,13 +42,16 @@ table.table {
     font-weight: 400;
     width: 100%;
     &.table-striped {
-        tr:nth-child(odd) {
+        tr:nth-child(even) {
             background-color: @bg-secondary;
         }
     }
-    td {
-        padding: 4px;
+    td, th {
+        padding: 5px;
         border: none;
+    }
+    th {
+        text-align: left;
     }
 }
 h1, h2, h3, h4, h5, h6, p, span {
@@ -57,6 +63,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 p {
     font-weight: normal;
+}
+
+hr {
+    margin: 40px auto;
+    background: transparent;
+    border: 2px solid @bg-primary;
 }
 
 .btn {
@@ -392,12 +404,27 @@ p {
     }
 }
 
+.ide-settings {
+    color: @text-menu;
+}
+.ide-light-panel {
+    background-color: @bg-secondary;
+    margin: 5px;
+}
 .icon-blue {
     color: @color-status;
 }
 
 .icon-red {
     color: @color-danger;
+}
+
+.ide-background-danger {
+    background-color: @color-danger;
+}
+
+.ide-background-primary {
+    background-color: @color-primary;
 }
 
 .ide-footer {
@@ -415,7 +442,7 @@ p {
     background-color: @color-status;
     padding: 0px 20px;
     > div {
-        padding: 0 5px;
+        padding: 0 9px;
         font-size: 12px;
         height: 22px;
         line-height: 22px;

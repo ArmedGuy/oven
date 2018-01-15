@@ -1,50 +1,71 @@
 <template>
     <div class="ide-panel">
-        <h2>Deployment</h2>
-        <div if.bind="status">
-            <h3>Current status: ${status.StatusDescription}</h3>
-            <h4 if.bind="status.Status == 'successful'">
-                <code>curl http://svchost.ludd.ltu.se/oven/api/${account.username}/${project.name}</code>
-            </h4>
-            <div class="ide-row">
-                <div class="ide-col">
-                    <h2>${status.TaskGroups['www'].HealthyAllocs}<br><small>Healty allocations</small></h2>
+        <div class="ide-panel ide-light-panel">
+            <h2>Deployment</h2>
+            <div if.bind="status">
+                <h3>Current status: ${status.StatusDescription}</h3>
+                <h4 if.bind="status.Status == 'successful'">
+                    <code>curl http://svchost.ludd.ltu.se/oven/api/${account.username}/${project.name}</code>
+                </h4>
+                <div class="ide-row">
+                    <div class="ide-col">
+                        <h2>${status.TaskGroups['www'].HealthyAllocs}<br><small>Healty allocations</small></h2>
+                    </div>
+                    <div class="ide-col">
+                        <h2>${status.TaskGroups['www'].UnhealthyAllocs}<br><small>Unhealty allocations</small></h2>
+                    </div>
+                    <div class="ide-col">
+                        <h2>${status.JobVersion}<br><small>Deployment version</small></h2>
+                    </div>
                 </div>
-                <div class="ide-col">
-                    <h2>${status.TaskGroups['www'].UnhealthyAllocs}<br><small>Unhealty allocations</small></h2>
-                </div>
-                <div class="ide-col">
-                    <h2>${status.JobVersion}<br><small>Deployment version</small></h2>
-                </div>
+                
+    
+                
+                
             </div>
-            <h3>Allocations</h3>
-            <table class="table table-striped">
-                <tr repeat.for="alloc of allocations">
-                    <td>${alloc.version}</td>
-                    <td>${alloc.name}</td>
-                    <td>${alloc.desired}</td>
-                    <td>${alloc.status}</td>
-                </tr>
-            </table>
-            <h3>Logs</h3>
-            <table class="table table-striped">
-                <tr repeat.for="event of events">
-                    <td>${event.datetime.toLocaleString()}</td>
-                    <td>${event.version}</td>
-                    <td>${event.type}</td>
-                    <td>${event.message}</td>
-                </tr>
-            </table>
+            <div if.bind="!status">
+                <h3>No deployment has been made.</h3>
+            </div>
+            <div class="deploy-button" show.bind="!deploying">
+                <input type="button" class="btn btn-block" click.trigger="deployProject()" value="Deploy">
+            </div>
+            <div show.bind="deploying">
+                <h4>Deployment scheduled...</h4>
+            </div>
         </div>
-        <div if.bind="!status">
-            <h3>No deployment has been made.</h3>
-        </div>
-
-        <div class="deploy-button" show.bind="!deploying">
-            <input type="button" class="btn btn-block" click.trigger="deployProject()" value="Deploy">
-        </div>
-        <div show.bind="deploying">
-            <h4>Deployment scheduled...</h4>
+        <div class="ide-panel">
+            <div if.bind="status">
+                <h3>Allocations</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Version</th>
+                        <th>Name</th>
+                        <th>Desired status</th>
+                        <th>Service status</th>
+                    </tr>
+                    <tr repeat.for="alloc of allocations">
+                        <td>${alloc.version}</td>
+                        <td>${alloc.name}</td>
+                        <td>${alloc.desired}</td>
+                        <td>${alloc.status}</td>
+                    </tr>
+                </table>
+                <h3>Events</h3>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Version</th>
+                        <th>Event</th>
+                        <th>Message</th>
+                    </tr>
+                    <tr repeat.for="event of events">
+                        <td>${event.datetime.toLocaleString()}</td>
+                        <td>${event.version}</td>
+                        <td>${event.type}</td>
+                        <td>${event.message}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </template>

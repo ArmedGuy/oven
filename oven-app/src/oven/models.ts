@@ -23,6 +23,7 @@ export class Project {
     dependencies: string;
     revision: number;
     documentation: string;
+    environment_id: any;
 
     // Generated values
     parsed: boolean;

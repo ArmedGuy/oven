@@ -19,6 +19,8 @@ def get_session():
 	
 @blueprint.route('/session/authenticate', methods=["GET"])
 def verify():
+	if session.get('logged_in'):
+		return redirect(app.config['FRONTEND_URL'])
 	ticket = request.args.get("ticket")
 	service = app.config['CAS_SERVICE']
 	if not ticket:
@@ -52,53 +54,3 @@ def logout():
 	if session.get("logged_in"):
 		session['logged_in'] = False
 	return redirect("/")
-	
-	
-@blueprint.route('/register', methods=["POST"])
-def register():
-	if request.method == 'POST':
-		tmp_mail = request.form['mail'].split("@")
-		if len(tmp_mail) >= 2 and len(tmp_mail[1].split(".")) >= 2 :
-	
-			existing_user = db.users.find_one({'user' : request.form['user']})
-			existing_mail = db.users.find_one({'mail' : request.form['mail']})
-			
-			if existing_user is not None:
-				return "{'response':'Error, user exists!'}"
-			elif existing_mail is not None:
-				return "{'response':'Error, mail exists!'}"
-			else:
-				session.pop('data', None)
-				
-				try:
-					db.users.insert({'user':request.form['user'],'mail':request.form['mail'],'create_date':datetime.now()})
-					session['user'] = request.form['user']
-					session['mail'] = request.form['mail']
-					return "{'response':'Sucess, welcome to oven!'}"
-				except:
-					return "{'response':'Error, could not create user!'}"
-		else:
-				return "{'response':'Enter a valid mail!'}"				
-	else:
-		return "{'tesponse':'Error, use POST and send user and mail'}"
-		
-	
-	
-	
-### The blueprints bellow will be removed @ a later date, used 4 testing...
-@blueprint.route('/', methods=["POST"])
-def add_user():
-	users = []
-	for x in db.users.find():
-		users.append(x)
-	return dumps(users)
-	
-
-@blueprint.route('/<id>', methods=["GET"])
-def get_user(id):
-	try:
-		return id
-	except:
-		return "ERROR!"
-
-	

@@ -33,7 +33,7 @@ export class App {
   configureRouter(config, router){
     config.title = 'Oven';
     config.map([
-      { route: '', moduleId: 'modules/menus/home' , title: 'Home' },
+      { name: 'home', route: '', moduleId: 'modules/menus/home' , title: 'Home' },
       { route: 'projects/', moduleId: 'modules/menus/home', title: 'Project' },
       { name: 'project', route: 'projects/:id', moduleId: 'modules/menus/project-explorer', title: 'IDE' },
       { route: 'deployments/', moduleId: 'modules/menus/deploy', title: 'Deployments' }

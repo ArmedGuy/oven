@@ -9,3 +9,4 @@ class ProductionConfig:
 	FRONTEND_URL = "http://bulbasaur.campus.ltu.se/"
 	API_URL = "http://bulbasaur.campus.ltu.se/api/"
 	CAS_SERVICE = "http://bulbasaur.campus.ltu.se/api/account/session/authenticate"
+	MAX_CONTENT_LENGTH = 16 * 1024 * 1024

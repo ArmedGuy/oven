@@ -16,10 +16,13 @@ export interface OvenApi {
     getProjects(): Promise<Array<Project>>;
     saveProject(project: Project) : Promise<any>;
     createProject(id: string, software_id: string, platform_id: string): Promise<Project>;
+    deleteProject(project : Project) : Promise<any>;
     getAccount(): Promise<Account>;
     deployProject(project: Project);
     getDeploymentStatus(project: Project) : Promise<any>;
     getDeploymentAllocations(project: Project) : Promise<any>;
+    uploadProjectEnvironment(project : Project, file : any) : Promise<any>;
+    removeProjectEnvironment(project : Project) : Promise<any>;
 }
 let projectMappingFields = ["name",
                             "short_description",
@@ -28,7 +31,8 @@ let projectMappingFields = ["name",
                             "code_file",
                             "dependencies",
                             "revision",
-                            "documentation"];
+                            "documentation",
+                            "environment_id"];
 
 let rejectNon200 = function(resp : any) {
     let json = resp.json(); // there's always a body
@@ -98,19 +102,20 @@ export class WebOvenApi implements OvenApi {
         });
     }
 
-    public saveProject(project: Project) : Promise<any> {
+    saveProject(project: Project) : Promise<any> {
         return new Promise((resolve, reject) => {
             getService(project.software_id).compileProject(project);
             let sendProject = {};
             projectMappingFields.forEach(field => {
+                if(field == "environment_id") return;
                 sendProject[field] = project[field];
             });
             project._dirty = false;
             this.client.fetch("projects/" + project._id, {
                 method: 'put',
                 body: json(sendProject)
-            }).then(response => resolve())
-            .catch(error => reject(error));
+            }).then(rejectNon200)
+            .then(response => resolve(response), error => reject(error));
         });
         
     }
@@ -147,21 +152,58 @@ export class WebOvenApi implements OvenApi {
         project.software_id = software_id;
         project.platform_id = platform_id;
         return new Promise<Project>((resolve, reject) => {
-                this.client.fetch("projects/", {
-                    method: 'post',
-                    body: json(project)
-                }).then(rejectNon200)
-                .then(response => {
-                    project._id = response._id["$oid"];
-                    project.user_id = response.user_id["$oid"];
-                    projectMappingFields.forEach(field => {
-                        project[field] = response[field];
-                    });
-                    getService(project.software_id).parseProject(project);
-                    resolve(project);
-                }, error => reject(error));
+            this.client.fetch("projects/", {
+                method: 'post',
+                body: json(project)
+            }).then(rejectNon200)
+            .then(response => {
+                project._id = response._id["$oid"];
+                project.user_id = response.user_id["$oid"];
+                projectMappingFields.forEach(field => {
+                    project[field] = response[field];
+                });
+                getService(project.software_id).parseProject(project);
+                resolve(project);
+            }, error => reject(error));
         });
     }
+
+    deleteProject(project : Project) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client.fetch("projects/" + project._id, {
+                method: "DELETE"
+            }).then(rejectNon200)
+            .then(response => resolve(response), error => reject(error));
+        });
+    }
+
+    uploadProjectEnvironment(project : Project, file : any) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            var form = new FormData();
+            form.append("env", file);
+            this.client.fetch("projects/" + project._id + "/environment", {
+                method: "POST",
+                body: form
+            }).then(rejectNon200)
+            .then(response => {
+                project.environment_id = "bla";
+                resolve(response)
+            }, error => reject(error));
+        });
+    }
+
+    removeProjectEnvironment(project : Project) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client.fetch("projects/" + project._id + "/environment", {
+                method: "DELETE",
+            }).then(rejectNon200)
+            .then(response => {
+                project.environment_id = null;
+                resolve(response);
+            }, error => reject(error));
+        });
+    }
+
     getAccount(): Promise<Account> {
         return new Promise<Account>((resolve, reject) => {
             this.client.fetch('account/session', {
@@ -219,7 +261,7 @@ export class MockOvenApi implements OvenApi {
         throw new Error("Not implemented");
     }
 
-    createProject(name: string, software: string, platform: string) {
+    createProject(name: string, software: string, platform: string) : Promise<Project> {
         return new Promise<Project>((resolve, reject) => {
             let project = new Project();
             project._id = "blablablabla";
@@ -228,6 +270,24 @@ export class MockOvenApi implements OvenApi {
             project.code_file = "";
             MockOvenApi.projects.push(project);
             resolve(project);
+        });
+    }
+
+    deleteProject(project : Project) : Promise<any> {
+        return new Promise((resolve, reject) => {
+
+        });
+    }
+
+    uploadProjectEnvironment(project : Project, file : any) : Promise<any> {
+        return new Promise((resolve, reject) => {
+
+        });
+    }
+
+    removeProjectEnvironment(project : Project) : Promise<any> {
+        return new Promise((resolve, reject) => {
+
         });
     }
 

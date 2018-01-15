@@ -9,3 +9,4 @@ class DevelopmentConfig:
 	FRONTEND_URL = "http://localhost:9000"
 	API_URL = "http://localhost:5555/api/"
 	CAS_SERVICE = "http://localhost:5555/api/account/session/authenticate"
+	MAX_CONTENT_LENGTH = 16 * 1024 * 1024

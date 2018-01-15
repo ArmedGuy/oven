@@ -1,3 +1,35 @@
 <template>
-    <h2>Microservice settings</h2>
+    <div class="ide-panel">
+        <div class="ide-panel ide-light-panel">
+            <h2>Settings</h2>
+            <div class="ide-settings">
+                <h3>Project name</h3>
+                <input type="text" value.bind="project.name">
+                <p>A project name can only contain a-z, 0-9, and dashes (-).</p>
+            </div>
+            <div class="ide-settings">
+                <h3>Short description</h3>
+                <input type="text" value.bind="project.short_description">
+                <p>A short description for the microservice. Will be truncated if over 140 characters.</p>
+            </div>
+            <div class="ide-settings">
+                <h3>Description</h3>
+                <textarea value.bind="project.description"></textarea>
+                <p>Longer description for the microservice. Supports Markdown.</p>
+            </div>
+            <button class="btn" click.trigger="saveProject()">Save project</button>
+            <button class="btn btn-danger" click.trigger="deleteProject()">Delete project</button>
+        </div>
+        <div class="ide-panel ide-light-panel">
+            <h2>Upload environment</h2>
+            <span if.bind="project.environment_id"><b>An environment has been set for this project</b></span>
+            <p>You can upload a .zip file containing extra files that are needed by your microservice, such as a requirements.txt-file. All files will be placed in the same directory as the microservice.
+                <br>Max size: <b>16MB</b>
+                <br>Uploading a new environment will require a redeployment of the microservice. This is not done automatically.
+            </p>
+            <input type="file" files.bind="environment"><br><br>
+            <button class="btn" click.trigger="uploadEnvironment()">Upload environment</button>
+            <button class="btn btn-danger" click.trigger="removeEnvironment()" if.bind="project.environment_id">Remove environment</button>
+        </div>  
+    </div>
 </template>

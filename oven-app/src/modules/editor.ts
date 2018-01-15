@@ -6,6 +6,8 @@ import { Router, RouterConfiguration } from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import { RoutePane } from './panes/route-pane';
+import { ProjectSettingsPane } from './panes/project-settings';
+import { DeploymentPane } from './panes/deployment';
 
 export class Editor {
   router: Router;
@@ -15,6 +17,10 @@ export class Editor {
   eventAggregator: EventAggregator;
 
   currentProject: Project;
+
+  projectStatus : string;
+  projectStatusColor : string;
+
   constructor(router: Router, eventAggregator: EventAggregator) {
     this.router = router;
     this.openPanes = new Array<EditorPane>();
@@ -26,6 +32,7 @@ export class Editor {
     
     let saveProject = () => {
         this.eventAggregator.publish('save project');
+
         setTimeout(saveProject, 5000);
     };
     saveProject();
@@ -50,8 +57,17 @@ export class Editor {
     });
     this.eventAggregator.subscribe('save project', () => {
       if(this.currentProject != null) {
-        console.log("save project");
-        this.api.saveProject(this.currentProject);
+        this.api.saveProject(this.currentProject).then(response => {
+          this.projectStatus = "Project saved!";
+          this.projectStatusColor = "ide-background-primary";
+          setTimeout(function() {
+            this.projectStatus = "";
+            this.projectStatusColor = "";
+          }.bind(this), 1500);
+        }, error => {
+          this.projectStatus = "Failed to save project: " + error.response;
+          this.projectStatusColor = "ide-background-danger";
+        });
       }
     });
     this.eventAggregator.subscribe('open pane', (pane) => {
@@ -62,6 +78,9 @@ export class Editor {
     });
     this.eventAggregator.subscribe('delete route', (route) => {
       this.deleteRoute(route);
+    });
+    this.eventAggregator.subscribe('delete project', project => {
+      this.deleteProject(project);
     });
   }
 
@@ -108,5 +127,22 @@ export class Editor {
       this.currentProject.routes.splice(idx, 1);
       this.currentProject._dirty = true;
     }
+  }
+
+  deleteProject(project : Project) {
+    this.api.deleteProject(project).then(response => {
+      if(this.currentProject == project) {
+        this.currentProject = null;
+        this.currentPane = null;
+        this.openPanes.forEach(pane => {
+          this.closePane(pane);
+        });
+      }
+      this.projectStatus = "";
+      this.projectStatusColor = "";
+      this.router.navigateToRoute('home');
+    }, error => {
+      alert("Failed to delete project " + project.name + ", reason: " + error.response);
+    });
   }
 }

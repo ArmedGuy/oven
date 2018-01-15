@@ -6,6 +6,7 @@ import { Project, Route } from '../../oven/models';
 import { RoutePane } from '../panes/route-pane';
 import {activationStrategy} from 'aurelia-router';
 import { DeploymentPane } from '../panes/deployment';
+import { ProjectSettingsPane } from '../panes/project-settings';
 
 @autoinject
 export class ProjectExplorer {
@@ -34,6 +35,7 @@ export class ProjectExplorer {
                 this.routePanes.push(rp);
             });
 
+            this.projectPanes.push(new ProjectSettingsPane(this.project, this.eventAggregator));
             this.projectPanes.push(new DeploymentPane(this.project));
 
         });

@@ -32,6 +32,7 @@
           </div>
           <div class="ide-status">
               <div if.bind="editor.currentProject">${editor.currentProject.name}</div>
+              <div if.bind="editor.projectStatus" class="${editor.projectStatusColor}">${editor.projectStatus}</div>
           </div>
       </div>
   </div>
