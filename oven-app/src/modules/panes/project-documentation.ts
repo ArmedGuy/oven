@@ -35,4 +35,18 @@ export class DocumentationPane implements EditorPane {
         };
         update.bind(this)();
     }
+
+    downloadMarkdown() {
+        let docs = "# " + this.project.name + "\n" + this.project.description + "\n" + this.project.documentation;
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(docs));
+        element.setAttribute('download', this.project.name + ".md");
+        
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        
+        element.click();
+        
+        document.body.removeChild(element);
+    }
 }

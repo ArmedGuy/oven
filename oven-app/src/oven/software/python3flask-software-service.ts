@@ -63,7 +63,7 @@ export class Python3FlaskSoftwareService implements SoftwareService {
     }
     compileProject(project: Project) {
         let code_file = "";
-        let documentation = "## Routes\n";
+        let documentation = "## Documentation\n";
         code_file += "from flask import Flask\napp = Flask(__name__)\n"
         code_file += "@app.route('/', methods=['GET'])\ndef index():\n  return '',200\n"
         project.routes.forEach((route) => {
