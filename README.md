@@ -62,15 +62,18 @@ Fetch currently logged in user, if any.
 Returns a user object with HTTP 200 if logged in, or null otherwise.
 
 <hr>
+
 ### **GET** `/api/account/session/authenticate`
 Callback URL for CAS authentication requests. Should be set as the CAS service URL when making a CAS login attempt.
 
 Returns a session cookie if login was successful, and redirects to the primary frontend URL.
 <hr>
+
 ### **POST** `/api/account/session/logout`
 Logs the user out of a session.
 
 <hr>
+
 ### **POST** `/api/projects`
 Create a new project as a logged in user.
 
@@ -85,17 +88,20 @@ Expects a JSON object with the following data:
 Returns a project object if the project was successfully created, or a non-200 answer if something went wrong.
 
 <hr>
+
 ### **GET** `/api/projects`
 Returns a list of projects for the currently logged in user.
 
 Returns an array of project objects.
 
 <hr>
+
 ### **GET** `/api/projects/<int:id>`
 Get a specific project that is tied to the currently logged in user.
 
 Returns a project object, or a non-200 response if something went wrong.
 <hr>
+
 ### **PUT** `/api/projects/<int:id>`
 Save a project with new data.
 
@@ -103,16 +109,19 @@ Expects a project object with new data to save.
 
 Returns the new project object if successful, and a non-200 response if something went wrong.
 <hr>
+
 ### **DELETE** `/api/projects/<int:id>`
 Delete a project specified by an id, and a user_id (derived from the session).
 END DOCS""
 <hr>
+
 ### **GET** `/api/projects/<int:id>/code/<filename>`
 Fetch the code file for a project.
 
 The code file is a complete, runnable file that contains the whole microservice.
 The filename parameter in the URL is only used by the Nomad cluster to name the file it downloads so that it can store it, in all other cases it is considered a dummy variable.
 <hr>
+
 ### **GET** `/api/projects/<int:id>/environment/<filename>`
 Fetch the environment file for a project.
 
@@ -120,6 +129,7 @@ The environment file is a .zip archive containing extra files that are needed by
 For example, one can add a requirements.txt to the .zip file if additional pip dependencies are needed.
 The filename parameter in the URL is only used by the Nomad cluster to name the file it downloads so that it can store it, in all other cases it is considered a dummy variable.
 <hr>
+
 ### **POST** `/api/projects/<int:id>/environment`
 Upload a new environment file to a project.
 
@@ -130,6 +140,7 @@ Expects a form-data encoded POST request with a single file in a variable called
 
 Returns a HTTP 200 response if the upload was successful, or a non 200 response if something went wrong.
 <hr>
+
 ### **DELETE** `/api/projects/<int:id>/environment`
 Clear the environment file for a project.
 
@@ -138,16 +149,19 @@ For example, one can add a requirements.txt to the .zip file if additional pip d
 
 Returns a HTTP 200 response if the environment was cleared, or a non 200 response if something went wrong.
 <hr>
+
 ### **POST** `/api/projects/<int:id>/deploy`
 Deploy the current state of a project to a platform.
 
 Returns HTTP 200 if a deployment was successfully scheduled, or a non 200 response if something went wrong.
 <hr>
+
 ### **GET** `/api/projects/<int:id>/deployment`
 Gets underlying Nomad data for a project's current deployment status.
 
 Returns a Nomad deployment object in JSON.
 <hr>
+
 ### **GET** `/api/projects/<int:id>/deployment/alloc`
 Gets underlying Nomad data for a project's current allocation status, and events.
 

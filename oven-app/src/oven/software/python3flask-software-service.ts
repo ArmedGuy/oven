@@ -100,7 +100,7 @@ export class Python3FlaskSoftwareService implements SoftwareService {
             code_file += "# oven:route:end_code\n";
             code_file += "# oven:route:end\n";
 
-            documentation += "<hr>\n";
+            documentation += "\n<hr>\n\n";
             
             // TODO: compile documentation
         });
