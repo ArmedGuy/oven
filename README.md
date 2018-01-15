@@ -56,6 +56,38 @@ The volume is mounted to allow for MongoDB to store its data outside of the cont
 
 ## API Documentation
 
+### Common objects
+
+#### User object
+A user object has the following fields:
+```
+{
+    "_id": "user id",
+    "username": "username",
+    "email": "email@example.net",
+    "created_date": "created date"
+}
+```
+
+#### Project object
+A project object has the following fields
+```
+{
+    "_id": "project id",
+    "software_id": "python3flask",
+    "platform_id": "nomad",
+    "name": "project name", // only a-z, 0-9 and dashes
+    "short_description" : "a short description", // over 140 will be truncated
+    "description" : "project description", // can be markdown
+    "code_file" : "code", // all the code for the project, rendered as one file and annotated
+    "revision": "deployed version", // not used yet
+    "documentation" : "markdown documentation", 
+    "environment_id": "id pointing to an uploaded environment file", // is handled internally.
+}
+```
+
+<hr>
+
 ### **GET** `/api/account/session`
 Fetch currently logged in user, if any.
 
