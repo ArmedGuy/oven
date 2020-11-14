@@ -11,7 +11,7 @@ redis==2.10.6
 requests==2.18.4
 setuptools==28.8.0
 SQLAlchemy==1.1.15
-urllib3==1.22
+urllib3==1.24.2
 Werkzeug==0.12.2
 uwsgi==2.0.15
 lxml==4.1.1
